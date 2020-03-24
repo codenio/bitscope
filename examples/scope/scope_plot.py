@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import matplotlib.pyplot as plt
 import numpy as np
 from bitscope import *
@@ -13,47 +15,54 @@ x = np.arange(MY_SIZE)/float(MY_RATE)
 scope = Scope()
 
 # print some details about the device
-print "Name = {}, Version = {}, ID = {}, Count = {}".format(scope.name,scope.version,scope.id,scope.count)
+print "Name = {}, Version = {}, ID = {}, Count = {}".format(scope.devices[0].name,scope.devices[0].version,scope.devices[0].id,len(scope.devices))
 
-# select the channel A, using the individual selection options available
-scope.select.device(0)
-scope.select.mode(BL_MODE_FAST)
-scope.select.channel(1)
 
-# get the probe object
-probeA = scope.select.probes
+# select device
+# scope.devices[0].select()
 
-# configure the probe object
-probeA.source()
-probeA.rate()
-probeA.size()
-probeA.pre_capture()
-probeA.post_capture()
+# setting mode to device 0 will by default selects the device
+scope.devices[0].mode(BL_MODE_FAST)
 
-# enable the selected probe
-probeA.enable()
+for channel in scope.devices[0].channels:
+    channel.configure(BL_SOURCE_BNC,BL_ZERO,BL_ZERO,BL_COUPLING_RF)
+    channel.enable()
 
-# trace and get data from probe A
-BL_Trace(0.01,BL_SYNCHRONOUS)
-Data = BL_Acquire()
+# select the device 0, channel 0
+# scope.devices[0].channels[0].select()
 
-# plot the received data from channel A
+# configuring a channel will by default selects the device and channel
+# scope.devices[0].channels[0].configure(BL_SOURCE_BNC,BL_ZERO,BL_ZERO,BL_COUPLING_DC)
+
+# enabling a channel will by default selects the device and channel
+# scope.devices[0].channels[0].enable()
+
+# configure tracer
+# scope.tracer.configure.rate()
+# scope.tracer.configure.time()
+
+# trace for a particular device once
+# BL_Trace(0.01,BL_SYNCHRONOUS)
+scope.trace(0.01,BL_SYNCHRONOUS)
+
+# select the required device and channel to obtain the data
+# scope.devices[0].channels[0].select()
+# print "Read data from channel : {}".format(BL_Select(BL_SELECT_CHANNEL,BL_ASK))
+# Data = BL_Acquire()
+
+# scope.trace(0.01,BL_SYNCHRONOUS)
+
+# acurie data from the required device and channel
+Data = scope.devices[0].channels[0].acquire()
+
+# plot the received data from channel 0
 plt.plot(x,np.array(Data))
-
-# select the channel B, using the individual probe selection option directly
-probeB = scope.select.probe(0,BL_MODE_FAST,2)
-
-# configure the probe
-probeB.configure()
-
-# enable the probe B
-probeB.enable()
-
-BL_Trace(0.01,BL_SYNCHRONOUS)
-Data = BL_Acquire()
 
 # create a new window
 plt.figure()
+
+# acurie data from the required device and channel
+Data = scope.devices[0].channels[1].acquire()
 
 # plot the received data from channel B
 plt.plot(x,np.array(Data))

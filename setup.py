@@ -1,5 +1,7 @@
 import setuptools
 
+from distutils.util import convert_path
+
 with open('DESCRIPTION.md', 'r') as readme:
   long_description = readme.read()
 
@@ -8,9 +10,15 @@ with open('requirements.txt', 'r') as requirements_file:
 
 requirements = requirements_text.split()
 
+pkg_ns = {}
+
+ver_path = convert_path('bitscope/metadata.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), pkg_ns)
+
 setuptools.setup(
       name='bitscope',
-      version='0.0.1',
+      version=pkg_ns['__version__'],
       description='python package for bitscope micro',
       url='https://github.com/codenio/bitscope',
       author='Aananth K',
