@@ -1,0 +1,7 @@
+* -*- mode: outline; -*- Time-stamp: "FIX.txt: Wed Jun 24 13:17:10 2015"
+
+* Beta 2.0 Build FE26B
+
+* Beta 2.0 Build FE26A
+
+* Beta 2.0 Build FC16E

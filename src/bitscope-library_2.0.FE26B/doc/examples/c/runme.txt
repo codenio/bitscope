@@ -1,0 +1,71 @@
+./runme 
+rm -f report capture
+gcc -Wall -g -ansi  -lBitLib  report.c   -o report
+gcc -Wall -g -ansi  -lBitLib  capture.c   -o capture
+
+Starting: Attempting to open 1 device...
+ Library: 2.0 DC01E (report.c)
+  Opened: 1 Device
+
+BitScope: DB04GX91 (BS001003)
+    Link: USB:/dev/ttyUSB0
+Channels: 10 (2 analog + 8 logic)
+   Modes: FAST DUAL MIXED LOGIC STREAM
+ Capture: 12288 @ 40000000Hz = 0.000307s (LOGIC)
+  Offset: +2.017V to -5.317V
+     POD: 11.00V  5.20V  3.50V  1.10V  0.52V
+
+Starting: Attempting to open 1 device...
+   Trace: 4 samples @ 1000000Hz = 0.000004s
+Acquired: 1.503906 1.503906 1.546875 1.632812
+
+Data acquisition complete. Dump Log...
+C    1 SEND open 1 
+R  244 CALL status device 1
+C    0 SEND select -1
+R    0 CALL select 0
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+R    0 CALL status analog 2
+C    0 SEND do set rate 0.00
+S   13 EXEC update rate 20000000.00
+C    0 SEND do set count 0
+S    1 EXEC update count 12288
+C    0 SEND do set rate 0.00
+S    0 EXEC update rate 20000000.00
+C    0 SEND do set count 0
+S    0 EXEC update count 12288
+R    1 CALL status logic 8
+R    0 CALL select 0
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+R    0 CALL status analog 2
+R    0 CALL status logic 8
+R    0 CALL do mod channel 0
+R    0 CALL do mod mode 0
+R    0 CALL do mod intro 0.00
+R    0 CALL do mod delay 0.00
+R    0 CALL do mod rate 1000000.00
+R    1 CALL do mod count 4
+R    0 CALL do mod channel 0
+C    0 SEND trigger 
+R    0 CALL do mod level 0.00
+R    0 CALL do mod source 1
+R    0 CALL status range 5
+C    0 SEND do set range 5
+R    0 CALL do get scale 11.00
+R    0 CALL do mod offset 0.00
+C    0 SEND do set enable true
+R    0 CALL do get time 0.00
+R    0 CALL do get rate 1000000.00
+R    0 CALL do get count 4
+R   11 CALL trace forced 0.00
+R    0 CALL do mod channel 0
+C    0 SEND do mod size 4
+R    0 CALL dump 
+R    3 CALL do get size 4

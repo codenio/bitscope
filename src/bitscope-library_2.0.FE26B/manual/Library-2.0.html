@@ -1,0 +1,1326 @@
+<h1 id="bitscope-library-v2-api-guide">BitScope Library V2 API Guide</h1>
+
+<p>The <strong><a href="http://bitscope.com/software/library/">BitScope Library</a></strong> is a powerful and easy to use <strong><a href="http://bitscope.com">BitScope</a> API</strong> <a href="#fn:api" id="fnref:api" title="See footnote" class="footnote">1</a> for:</p>
+
+<ul>
+<li><strong><a href="http://en.wikipedia.org/wiki/Windows">Windows XP, 7 &amp; 8</a></strong> (Windows XP works but is no longer officially supported)</li>
+<li><strong><a href="http://en.wikipoedia.org/wiki/Linux">Linux</a></strong> (all major distributions including Debian, Ubuntu, Fedora and RedHat)</li>
+<li><strong><a href="http://en.wikipedia.org/wiki/Osx">Mac OS X</a></strong> (Snow Leopard and all later versions),</li>
+<li><strong><a href="http://en.wikipedia.org/wiki/ARM_architecture">ARM platforms</a></strong> including <strong><a href="http://www.raspberrypi.org/">Raspberry Pi</a></strong>. </li>
+</ul>
+
+<p>It provides off-the-shelf <em>language bindings</em> for the:</p>
+
+<ul>
+<li><strong>C</strong> <a href="#fn:clang" id="fnref:clang" title="See footnote" class="footnote">2</a>, <strong>C++</strong> <a href="#fn:cplang" id="fnref:cplang" title="See footnote" class="footnote">3</a>, <strong>Python</strong> <a href="#fn:python" id="fnref:python" title="See footnote" class="footnote">4</a> and <strong>Pascal</strong> <a href="#fn:pascal" id="fnref:pascal" title="See footnote" class="footnote">5</a> programming languages.</li>
+</ul>
+
+<p>Other language bindings are available upon request.</p>
+
+<p><div class="toc">
+<ul>
+<li><a href="#bitscope-library-v2-api-guide">BitScope Library V2 API Guide</a><ul>
+<li><a href="#library-overview">Library Overview</a></li>
+<li><a href="#bitscope-programming">BitScope Programming</a><ul>
+<li><a href="#1-library-and-device-initialization">(1) Library and Device Initialization</a></li>
+<li><a href="#2-device-programming-and-setup">(2) Device Programming and Setup</a></li>
+<li><a href="#3-trace-programming-and-capture">(3) Trace Programming and Capture</a></li>
+<li><a href="#4-acquiring-data-from-the-device">(4) Acquiring Data from the Device</a></li>
+<li><a href="#5-closing-devices-and-the-library">(5) Closing Devices and the Library</a></li>
+</ul>
+</li>
+<li><a href="#probe-files-and-link-specifications">Probe Files and Link Specifications</a><ul>
+<li><a href="#probe-file-locations">Probe File Locations</a><ul>
+<li><a href="#windows-probe-file-locations">Windows Probe File Locations</a></li>
+<li><a href="#linux-mac-os-x-and-raspberry-pi-probe-file-locations">Linux, Mac OS X and Raspberry Pi Probe File Locations</a></li>
+</ul>
+</li>
+<li><a href="#link-specification-syntax">Link Specification Syntax</a></li>
+<li><a href="#probe-file-defaults">Probe File Defaults</a></li>
+</ul>
+</li>
+<li><a href="#device-simulations">Device Simulations</a></li>
+<li><a href="#diagnostics">Diagnostics</a></li>
+<li><a href="#error-recovery">Error Recovery</a></li>
+<li><a href="#code-examples">Code Examples</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a><ul>
+<li><a href="#the-library-cant-find-my-bitscope">The Library can’t find my BitScope!</a></li>
+<li><a href="#which-bitscope-am-i-really-connected-to">Which BitScope am I really connected to?</a></li>
+<li><a href="#why-does-it-take-so-long-to-connect">Why does it take so long to connect?</a></li>
+<li><a href="#what-parameter-values-does-the-library-actually-use">What parameter values does the library actually use?</a></li>
+<li><a href="#can-i-use-the-library-in-a-multi-threaded-environment">Can I use the library in a multi-threaded environment?</a></li>
+<li><a href="#help-i-dont-understand-how-blxxxx-works">Help! I don’t understand how BL_xxxx works?</a></li>
+<li><a href="#this-is-not-working-ive-found-a-bug">This is not working, I’ve found a Bug!</a></li>
+</ul>
+</li>
+<li><a href="#library-reference">Library Reference</a><ul>
+<li><a href="#blacquire-dump-data-from-the-device">BL_Acquire - dump data from the device</a></li>
+<li><a href="#blclose-close-all-open-devices">BL_Close - close all open devices</a></li>
+<li><a href="#blcount-count-devices-channels-or-ranges">BL_Count - count devices, channels, or ranges</a></li>
+<li><a href="#blcoupling-select-the-channel-source-coupling">BL_Coupling - select the channel source coupling</a></li>
+<li><a href="#bldelay-assign-post-trigger-delay">BL_Delay - assign post-trigger delay</a></li>
+<li><a href="#blenable-change-channel-enable-status">BL_Enable - change channel enable status</a></li>
+<li><a href="#blerror-return-most-recent-error-if-any">BL_Error - return most recent error (if any)</a></li>
+<li><a href="#blhalt-all-any-pending-or-prevailing-device-activity">BL_Halt - all any pending or prevailing device activity</a></li>
+<li><a href="#blid-return-the-selected-device-id">BL_ID - return the selected device ID</a></li>
+<li><a href="#blindex-assign-the-buffer-offset-for-dumps">BL_Index - assign the buffer offset (for dumps)</a></li>
+<li><a href="#blinitialize-initialize-the-library-optional">BL_Initialize - initialize the library (optional)</a></li>
+<li><a href="#blintro-assign-the-pre-trigger-size-intro-region">BL_Intro - assign the pre-trigger size (intro region)</a></li>
+<li><a href="#bllog-dump-the-pending-log">BL_Log - dump the pending log</a></li>
+<li><a href="#blmode-select-and-trace-mode">BL_Mode - select and trace mode</a></li>
+<li><a href="#blname-return-the-device-link-name">BL_Name - return the device link name</a></li>
+<li><a href="#bloffset-assign-channel-offset">BL_Offset - assign channel offset</a></li>
+<li><a href="#blopen-open-one-or-more-devices">BL_Open - open one or more devices</a></li>
+<li><a href="#blrange-select-the-channel-range">BL_Range - select the channel range</a></li>
+<li><a href="#blrate-assign-the-sample-rate">BL_Rate - assign the sample rate</a></li>
+<li><a href="#blselect-select-a-device-channel-or-source">BL_Select - select a device, channel or source</a></li>
+<li><a href="#blsize-assign-the-capture-size-samples">BL_Size - assign the capture size (samples)</a></li>
+<li><a href="#blstate-return-capture-engine-state">BL_State - return capture engine state</a></li>
+<li><a href="#bltime-assign-the-capture-duration-seconds">BL_Time - assign the capture duration (seconds)</a></li>
+<li><a href="#bltrace-initiate-capture">BL_Trace - initiate capture</a></li>
+<li><a href="#bltrigger-set-up-the-trigger">BL_Trigger - set up the trigger</a></li>
+<li><a href="#blversion-return-the-version">BL_Version - return the version</a></li>
+</ul>
+</li>
+<li><a href="#license">License</a></li>
+<li><a href="#version">Version</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+
+
+<h2 id="library-overview">Library Overview</h2>
+
+<p>The <strong>Library</strong> provides <em>full programmed access</em> to the <strong>BitScope Capture Engine</strong>. It is implemented using a small set of portable functions. Programming BitScope to capture waveforms and logic is simply a matter of calling the <strong>correct sequence of these functions</strong> from your program. There are no complicated data structures, parameter lists or callbacks. </p>
+
+<p>See <strong><a href="#bitscope-programming">BitScope Programming</a></strong> and <strong><a href="#library-reference">Library Reference</a></strong> for details.</p>
+
+
+
+<h2 id="bitscope-programming">BitScope Programming</h2>
+
+<p>Regardless of the device and library functions used, BitScope programming always follows a familiar sequence:</p>
+
+<blockquote>
+  <p><strong>(1) <a href="#1-library-and-device-initialization">Initialize</a> -&gt; (2) <a href="#2-device-programming-and-setup">Setup</a> -&gt; (3) <a href="#3-trace-programming-and-capture">Trace</a> -&gt; (4) <a href="#4-acquiring-data-from-the-device">Acquire</a> -&gt; (5) <a href="#5-closing-devices-and-the-library">Close</a></strong></p>
+</blockquote>
+
+<p>The library must first be <strong>(1) initialized</strong> and one or more devices opened. For each open device the required capture conditions must be <strong>(2) set up</strong> before a <strong>(3) trace</strong> is initiated to capture or generate the signals. When the trace completes the data may be <strong>(4) acquired</strong> to the host computer for display and analysis. Initialization and setup is normally only done once but the trace and acquire steps may be repeated as often as required. When finished the devices should be <strong>(5) closed</strong> which releases the resources allocated to them.</p>
+
+
+
+<h3 id="1-library-and-device-initialization">(1) Library and Device Initialization</h3>
+
+<p>Before use, <em>the library must be initialized</em> and one or more <em>devices opened</em>:</p>
+
+<ul>
+<li><strong><a href="#blinitialize-initialize-the-library-optional">BL_Initialize</a></strong> - initialize the library</li>
+<li><strong><a href="#blopen-open-one-or-more-devices">BL_Open</a></strong> - open one or more devices</li>
+</ul>
+
+<p>The <a href="#blinitialize-initialize-the-library-optional">BL_Initialize</a> call is implicit (in most cases); calling <a href="#blopen-open-one-or-more-devices">BL_Open</a> to open the device(s) is sufficient to initialize the library.</p>
+
+<p>When the device is open, <em>information about it may be obtained</em>:</p>
+
+<ul>
+<li><strong><a href="#blname-return-the-device-link-name">BL_Name</a></strong> - return the device link name</li>
+<li><strong><a href="#blversion-return-the-version">BL_Version</a></strong> - return version information</li>
+<li><strong><a href="#blid-return-the-selected-device-id">BL_ID</a></strong> - return the selected device ID</li>
+<li><strong><a href="#blcount-count-devices-channels-or-ranges">BL_Count</a></strong> – count devices, channels and ranges</li>
+</ul>
+
+<p>With the exception of BL_Count (see below), these functions are necessary only for reporting information to the application and identifying the device.</p>
+
+
+
+<h3 id="2-device-programming-and-setup">(2) Device Programming and Setup</h3>
+
+<p>After one or more devices have been opened they must be <em>set up for use</em>. This is the most detailed programming step but it is only needed once after opening the device unless <a href="#error-recovery">recovering from an error</a>. The first thing your program needs to know is how many devices, channels, ranges and other properties are available (they may not all be the same). The number of open devices may be obtained via <a href="#blcount-count-devices-channels-or-ranges">BL_Count</a>.</p>
+
+<ul>
+<li><strong><a href="#blcount-count-devices-channels-or-ranges">BL_Count</a></strong> - count devices, analog and logic channels, or ranges</li>
+</ul>
+
+<p><a href="#blcount-count-devices-channels-or-ranges">BL_Count</a> is also used to report the number of <em>analog channels</em>, <em>logic channels</em> and <em>analog input ranges</em> (on each analog channel). Which entity it reports depends on its argument <strong>and</strong> <em>which device, channel or source is selected a the time it is called</em>. The <em>device, channel</em> and <em>source</em> are selected using <a href="#blselect-select-a-device-channel-or-source">BL_Select</a>:</p>
+
+<ul>
+<li><strong><a href="#blselect-select-a-device-channel-or-source">BL_Select</a></strong> - select a device, channel or signal source</li>
+</ul>
+
+<p>The first <a href="#blselect-select-a-device-channel-or-source">BL_Select</a> argument specifies which type of entity to select. When the device is <strong>selected for the first time</strong>, its <em>trace mode must also be selected</em>:</p>
+
+<ul>
+<li><strong><a href="#blmode-select-and-trace-mode">BL_Mode</a></strong> - select a trace mode</li>
+</ul>
+
+<p>It must be called after selecting the device but <strong>before selecting the channel</strong>. This is important because the number of channels available may be fewer than the physical number the device supports in some modes. For example, to select the BNC source on channel 1 on device 0:</p>
+
+<pre><code>BL_Select(BL_SELECT_DEVICE,0);
+BL_Mode(BL_MODE_FAST);
+BL_Select(BL_SELECT_CHANNEL,1);
+BL_Select(BL_SELECT_SOURCE,BL_SOURCE_BNC);
+</code></pre>
+
+<p>Once the device and mode are selected, each channel may be selected in turn and configured to choose a source, input offset, voltage range, signal coupling and whether to enable it for capture:</p>
+
+<ul>
+<li><strong><a href="#blrange-select-the-channel-range">BL_Range</a></strong> - select the channel range</li>
+<li><strong><a href="#bloffset-assign-channel-offset">BL_Offset</a></strong> - assign channel offset</li>
+<li><strong><a href="#blcoupling-select-the-channel-source-coupling">BL_Coupling</a></strong> - select the channel source coupling</li>
+<li><strong><a href="#blenable-change-channel-enable-status">BL_Enable</a></strong> - change channel enable status</li>
+</ul>
+
+<p>For each channel <a href="#blenable-change-channel-enable-status">enabled</a> for capture, this process is repeated as required. When the channels are all configured, the trace may be programmed.</p>
+
+
+
+<h3 id="3-trace-programming-and-capture">(3) Trace Programming and Capture</h3>
+
+<p>After the device, mode and channels are configured, <em>trace settings are programmed</em>. First the sample rate and capture size (specified in samples) are assigned:</p>
+
+<ul>
+<li><strong><a href="#blrate-assign-the-sample-rate">BL_Rate</a></strong> - assign the sample rate (Hz)</li>
+<li><strong><a href="#blsize-assign-the-capture-size-samples">BL_Size</a></strong> - assign the capture size (samples)</li>
+</ul>
+
+<p>This must be done first to establish the core trace settings. Choose values to ensure the duration required will be captured given the selected sample rate. Some modes use finite (device) buffers so your choice <a href="#what-parameter-values-does-the-library-actually-use">may be constrained</a>. An alternative is to assign the duration directly:</p>
+
+<ul>
+<li><strong><a href="#bltime-assign-the-capture-duration-seconds">BL_Time</a></strong> - assign the capture duration (seconds)</li>
+</ul>
+
+<p>In this case, the capture size and sample rate may be adjusted by the library automatically. Next the trigger, if required, is established:</p>
+
+<ul>
+<li><strong><a href="#bltrigger-set-up-the-trigger">BL_Trigger</a></strong> - set up the trigger</li>
+</ul>
+
+<p>This function accepts two arguments specifying the trigger level (which is applied to the currently selected channel) and the type of trigger. If signals are to be captured before the trigger, or a delay is required after the trigger, these parameters are specified next using two functions:</p>
+
+<ul>
+<li><strong><a href="#blintro-assign-the-pre-trigger-size-intro-region">BL_Intro</a></strong> - assign the pre-trigger size (intro region)</li>
+<li><strong><a href="#bldelay-assign-post-trigger-delay">BL_Delay</a></strong> - assign post-trigger delay (delay before capture)</li>
+</ul>
+
+<p>Both functions are optional (not required when tracing untriggered). At this point <em>the device is ready to capture waveforms and logic data</em>. All the preceding steps need not be repeated if the parameters for a series of captures remain unchanged. To commence the trace and capture signals call:</p>
+
+<ul>
+<li><strong><a href="#bltrace-initiate-capture">BL_Trace</a></strong> - initiate capture</li>
+</ul>
+
+<p>This function is the one that actually <em>talks to BitScope and captures waveforms</em>. This function <em>may take an arbitrarily long time to complete</em>. Indeed it <em>may never complete</em>, so to avoid locking your program, it may be called <em><a href="#bltrace-initiate-capture">asynchronously</a></em> or it may be called with a <em>specified timeout</em>. When called <em>asynchronously</em> <a href="#bltrace-initiate-capture">BL_Trace</a> <em>always returns immediately</em>, even if the trace has not yet completed. In this case call:</p>
+
+<ul>
+<li><strong><a href="#blstate-return-capture-engine-state">BL_State</a></strong> - return capture engine state</li>
+</ul>
+
+<p>periodically after <a href="#bltrace-initiate-capture">BL_Trace</a> to monitor progress of the trace. <a href="#blstate-return-capture-engine-state">BL_State</a> returns a token reporting trace in progress, trace complete, timeout or an error code. When an asynchronous trace is in progress it may be manually stopped with:</p>
+
+<ul>
+<li><strong><a href="#blhalt-all-any-pending-or-prevailing-device-activity">BL_Halt</a></strong> - all any pending or prevailing device activity</li>
+</ul>
+
+<p>An alternative <em>is to call <a href="#bltrace-initiate-capture">BL_Trace</a> synchronously</em> with a <em>specified timeout</em>. In this case <a href="#bltrace-initiate-capture">BL_Trace</a> is guaranteed to return within the time specified but the trace may or may not have completed in that time; it returns TRUE if it has, FALSE otherwise.</p>
+
+
+
+<h3 id="4-acquiring-data-from-the-device">(4) Acquiring Data from the Device</h3>
+
+<p>Once the trace has completed, the data may be acquired:</p>
+
+<ul>
+<li><strong><a href="#blacquire-dump-data-from-the-device">BL_Acquire</a></strong> - acquire data from the device.</li>
+</ul>
+
+<p><a href="#blacquire-dump-data-from-the-device">BL_Acquire</a> uploads data from the device one channel at a time. Before it is called each time, select the channel (and optionally the device) to be acquired with <a href="#blselect-select-a-device-channel-or-source">BL_Select</a>. If acquiring from other than the first sample, the starting index may be specified:</p>
+
+<ul>
+<li><strong><a href="#blindex-assign-the-buffer-offset-for-dumps">BL_Index</a></strong> - assign the buffer offset (for acquisition)</li>
+</ul>
+
+<p>If <a href="#blindex-assign-the-buffer-offset-for-dumps">BL_Index</a> is used it must be called <em>before <a href="#bltrace-initiate-capture">BL_Trace</a></em>.  In any case, the return value of <a href="#blacquire-dump-data-from-the-device">BL_Acquire</a> specifies how many sample are actually acquired. The return value will not be greater than the number requested but it may be fewer:</p>
+
+<ol>
+<li>If the number of samples captured is fewer than the number requested,</li>
+<li>If the trace was terminated early, a timeout or error occured, or</li>
+<li>A programming error (such as forgetting to enable the channel).</li>
+</ol>
+
+<p>Typically one executes <a href="#bltrace-initiate-capture">BL_Trace</a> and cycles through a sequence of <a href="#blacquire-dump-data-from-the-device">BL_Acquire</a>, one for each channel (on each device), before executing the next <a href="#bltrace-initiate-capture">BL_Trace</a>.</p>
+
+
+
+<h3 id="5-closing-devices-and-the-library">(5) Closing Devices and the Library</h3>
+
+<p>When you’re finished with the library, call <strong><a href="#blclose-close-all-open-devices">BL_Close</a></strong>. This closes all open devices (it’s not possible to close only one). If you wish to close one of several devices, close them all and reopen those you wish to continue using.</p>
+
+
+
+<h2 id="probe-files-and-link-specifications">Probe Files and Link Specifications</h2>
+
+<p>The <strong>Probe File</strong> is a <em>configuration file</em> on the host computer. It tells the Library <em>where it can find the BitScopes</em> and <em>how to connect with them</em>. The Probe File is a <strong>text file</strong> containing a list of <strong><a href="#link-specification-syntax">Link Specifications</a></strong> defining connection protocols used via RS-232, USB or IP networks. It is also used by BitScope <a href="http://bitscope.com/software/">applications</a> and is automatically created by these applications if it does not already exist.  The Probe file may also be <a href="#link-specification-syntax">created manually</a> with a text editor but it if does not exist when the library is used, <a href="#probe-file-defaults">built-in defaults</a> are used instead.</p>
+
+
+
+<h3 id="probe-file-locations">Probe File Locations</h3>
+
+<p>There are two probe files on the host, one <strong>global</strong> and the other <strong>local</strong>. Both global and local Probe Files are named <strong>BitScope.prb</strong> (or <em>bitscope.prb</em>). The <strong>global probe file</strong> establishes system defaults and should not be modified. The <strong>local probe file</strong> is automatically created (from the global file, if the local file does not exist) and it may be manually or automatically modified, as required.</p>
+
+
+
+<h4 id="windows-probe-file-locations">Windows Probe File Locations</h4>
+
+<p>On a Windows PC, the <strong>local probe file</strong> is located at:</p>
+
+<pre><code>C:\Users\&lt;user&gt;\AppData\Local\BitScope\BitScope.prb
+</code></pre>
+
+<p>or on older version of Windows:</p>
+
+<pre><code>C:\Documents and Settings\&lt;user&gt;\Local Settings\Application Data\BitScope\BitScope.prb
+</code></pre>
+
+<p>where <strong></strong> is your logged in user name on your PC. The global probe file is located at</p>
+
+<pre><code>&lt;BITSCOPE&gt;\BitScope.prb
+</code></pre>
+
+<p>where <strong>&lt; BITSCOPE &gt;</strong> is the location chosen when you installed the Library. The default (and recommended) location is:</p>
+
+<pre><code>C:\Program Files\BitScope\BitScope.prb
+</code></pre>
+
+
+
+<h4 id="linux-mac-os-x-and-raspberry-pi-probe-file-locations">Linux, Mac OS X and Raspberry Pi Probe File Locations</h4>
+
+<p>On a Linux or Mac OS X based system, the local probe file is located as:</p>
+
+<pre><code>~/.config/bitscope/bitscope.prb
+</code></pre>
+
+<p>which conforms to the <a href="http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html">XDG Specification</a>. The global probe file is located at:</p>
+
+<pre><code>/etc/bitscope/bitscope.prb
+</code></pre>
+
+<p>The global probe file will not exist if you have not installed the packaged version of the library but defaults apply in this case. On Linux and Mac systems, the probe file can also be located at:</p>
+
+<pre><code>~/.bitscope/config/bitscope.prb
+</code></pre>
+
+<p>but this location is depreciated and used for backward compatibility only.</p>
+
+
+
+<h3 id="link-specification-syntax">Link Specification Syntax</h3>
+
+<p>Each line in the probe file is either <em>blank</em>, a <em>comment</em> or a <strong>link specification</strong>. A <em>link specification</em> defines a connection with a BitScope and has the same syntax when used directly with <a href="#blopen-open-one-or-more-devices">BL_Open</a> as it does when it appears in a probe file. The following is an example probe file for a Linux system:</p>
+
+<pre><code># PROBE FILE SYNTAX
+#
+# Whitespace, blank lines or lines including '#' are ignored.
+#
+# The remaining lines each define a single "link". Each link
+# specifies a connection method and identifies a device.
+#
+# The complete syntax of a LINK is:
+#
+#      LINK =&gt; SERIAL|NETWORK|NONE
+#
+#   NETWORK =&gt; UDP:ADDRESS(:PORT)?(:ID)?(:BC)?
+#    SERIAL =&gt; (TTY|USB):DEVICE(:BAUD)?(:BC)?
+#      NONE =&gt; NIL:BC(:PRODUCT)?(:VENDOR)?
+#
+#       TTY =&gt; serial connection method
+#       USB =&gt; USB/Serial connection method
+#       UDP =&gt; User Datagram Protcol (network) method
+#       NIL =&gt; No connection method (simulate device)
+# 
+#    DEVICE =&gt; serial or USB device (eg, /dev/ttyUSB0)
+#   ADDRESS =&gt; IP address or host name or "MULTICAST"
+#   PRODUCT =&gt; Device identifier (up to 8 alpha numeric)
+#    VENDOR =&gt; Device vendor identifier (8 alpha-mueric)
+#      PORT =&gt; IP port number (4 hex digits)
+#      BAUD =&gt; Serial baud rate (normally optional)
+#        ID =&gt; BitScope LIA ID (4 hex digits)
+#        BC =&gt; byte-code revision ID (eg, BC000301)
+#
+# For example, to connect to a serial BitScope:
+
+TTY:/dev/ttyS2
+
+# a USB BitScope:
+
+USB:/dev/ttyUSB1
+
+# a serial BitScope, but only if it's a BS311
+
+TTY:/dev/ttyS2:BS031100
+
+# a network BitScope via multicast
+
+UDP:MULTICAST
+
+# or (if there are more than one BitScope on the local net)
+# and you want to use port numbers to differentiate them
+
+UDP:MULTICAST:4321
+UDP:MULTICAST:4322
+
+# or using different IP addresses with unicast:
+
+UDP:192.168.1.2
+UDP:192.168.1.5
+
+# or if your BitScope has the hostname LABSCOPE
+
+UDP:LABSCOPE
+
+# or to connect with our demo BitScope on the Internet
+
+UDP:sydney.bitscope.com
+
+# you get the picture.
+</code></pre>
+
+<p>Windows systems are the same except the names used for serial and USB ports are COM1, COM2 … COM instead of /dev/ttyS0 or /dev/ttyUSB0 etc.</p>
+
+
+
+<h3 id="probe-file-defaults">Probe File Defaults</h3>
+
+<p>If neither the local or global both probe files exist, built-in defaults are used. The library attempts to locate available BitScopes automatically in this case using an internal algorithm. Alternatively an explicit <a href="#link-specification-syntax">link specification</a> can be provide to <a href="#blopen-open-one-or-more-devices">BL_Open</a> when called (in which case the probe file is ignored). Defaults are also provided by the global probe file, if it exists. On Windows typical defaults are:</p>
+
+<pre><code>UDP:MULTICAST
+USB:COM3
+USB:COM4
+USB:COM5
+USB:COM6
+USB:COM7
+USB:COM8
+USB:COM9
+UDP:SYDNEY
+TTY:COM1
+TTY:COM2
+NIL:BS032500
+</code></pre>
+
+<p>and on Linux based systems they are:</p>
+
+<pre><code>USB:/dev/ttyUSB0
+UDP:MULTICAST
+USB:/dev/ttyUSB1
+USB:/dev/ttyUSB2
+TTY:/dev/ttyS0
+TTY:/dev/ttyS1
+UDP:SYDNEY
+NIL:BS032500
+</code></pre>
+
+<p>When using <a href="#blopen-open-one-or-more-devices">BL_Open</a> with a probe file, links are probed in the order they appear in the local file, then the global file and finally the defaults are used. This is why the library can “magically open a BitScope”, only to find it’s not the BitScope you intended. Use <a href="#blopen-open-one-or-more-devices">BL_Open</a> with an explicit link specification if you do not want this to happen.</p>
+
+
+
+<h2 id="device-simulations">Device Simulations</h2>
+
+<p>There two special types of device supported by the library: <strong>NIL</strong> and <strong>SIM</strong>.</p>
+
+<p>A <strong>NIL device</strong> is a minimal <em>device simulation</em> sufficient to open and configure but not synthesize capture data. It is useful when developing software with library for use with BitScope devices you may not have available because it allows you to use the Library API to test that your code works with any <a href="http://bitscope.com/software/library/supported.html">supported model</a>. A NIL device link specification looks like:</p>
+
+<pre><code>NIL:&lt;DEVICE&gt;
+</code></pre>
+
+<p>where <strong>&lt; DEVICE &gt;</strong> is the device type identifier. </p>
+
+<p>There are currently 26 device simulations supported by the library: </p>
+
+<pre><code>BS000500 BS000501 BS001001 BS001002 BS001003 BS001004 BS005000 BS010000 BS012000 BS031000 BS031100 BS032000 BS032500 BS032600 BS044200 BS044201 BS044202 BS044500 BS044501 BC000050 BC000120 BC000220 BC000300 BC000301 BC000440 BC000441
+</code></pre>
+
+<p>A <strong>SIM device</strong> is a more <em>sophisticated device simulation</em> that simulates the operation of some model BitScopes. In addition to a NIL device is synthesizes data as if captured by a real BitScope. It is available in some developer editions of the library only.</p>
+
+
+
+<h2 id="diagnostics">Diagnostics</h2>
+
+<p>You may be interested to know what the library is doing as your program runs. The <strong><a href="#bllog-dump-the-pending-log">BL_Log</a></strong> function is available to provide access to this information. It tells you what the library does and how long execution takes in response to your API function calls. Example output of BL_Log looks like this:</p>
+
+<pre><code>Data acquisition complete. Dump Log...
+C    0 SEND open 1 
+R  243 CALL status device 1
+C    0 SEND select -1
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+R    0 CALL select 0
+C    0 SEND do set rate 0.00
+S   13 EXEC update rate 20000000.00
+C    0 SEND do set count 0
+S    0 EXEC update count 12288
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+R    0 CALL status analog 2
+R    0 CALL status logic 8
+R    1 CALL select 0
+C    0 SEND do set mode 0
+C    0 SEND do set channel 0
+C    0 SEND do set factor 1.00
+R    0 CALL status analog 2
+R    0 CALL status logic 8
+R    0 CALL do mod channel 0
+R    0 CALL do mod mode 0
+R    0 CALL do mod intro 0.00
+R    0 CALL do mod delay 0.00
+R    1 CALL do mod rate 1000000.00
+R    0 CALL do mod count 4
+R    0 CALL do mod channel 0
+C    0 SEND trigger 
+R    0 CALL do mod level 0.00
+R    1 CALL do mod source 1
+R    0 CALL status range 5
+C    0 SEND do set range 5
+R    0 CALL do get scale 11.00
+R    0 CALL do mod offset 0.00
+C    0 SEND do set enable true
+R    0 CALL do get time 0.00
+R    0 CALL do get rate 1000000.00
+R    0 CALL do get count 4
+R   11 CALL trace forced 0.00
+R    0 CALL do mod channel 0
+C    0 SEND do mod size 4
+R    0 CALL dump 
+R    3 CALL do get size 4
+</code></pre>
+
+<p>A detailed description of these diagnostics is beyond the scope of this manual but several general points to note are the:</p>
+
+<ol>
+<li>first columm reports command (C), reply (R) or state (S) execution</li>
+<li>second reports how many milliseconds between each command</li>
+<li>third reports RPC (CALL), messaging (SEND) or execution (EXEC)</li>
+<li>remaining lines indicate what actions are taken and vary per log entry</li>
+</ol>
+
+<p>The <a href="#bllog-dump-the-pending-log">BL_Log</a> function may not be enabled in all editions of the library. For example, in optimized production releases it is usually disabled for performance reasons. By contrast, in developer editions more detailed diagnostics may available for specialized purposes. However using these generally requires a more advanced knowledge of the BitScope Capture Engine and its <a href="http://www.bitscope.com/design/manual/">Virtual Machine Architecture</a>. More information is available for OEM developers upon request.</p>
+
+
+
+<h2 id="error-recovery">Error Recovery</h2>
+
+<p>In the real world, errors happen. </p>
+
+<p>For example, the power can fail or network connections can drop out.</p>
+
+<p>The Library handles many errors automatically, for example by reinitiating a device request. However, some errors are too significant to recover this way in which case the client program must take additional steps to recover normal operation.</p>
+
+<p>Errors are generally detected one of three ways:</p>
+
+<ol>
+<li><a href="#bltrace-initiate-capture">BL_Trace</a> returns FALSE when <em>executing <a href="#bltrace-initiate-capture">synchronously</a></em>, or</li>
+<li><a href="#blstate-return-capture-engine-state">BL_State</a> reports <strong>BL_STATE_ERROR</strong> when <em>executing <a href="#bltrace-initiate-capture">asynchronously</a></em>.</li>
+<li><a href="#blacquire-dump-data-from-the-device">BL_Acquire</a> returns fewer samples than requested when called.</li>
+</ol>
+
+<p>Take care with the third mechanism, BL_Acquire may return fewer samples than requested if you’ve made a set up programming error too!</p>
+
+<p>In general, error recovery simply requires that you reprogram the BitScope the same way you did when you first opened it. That is, if an error is detected, re-execute your setup code before continuing as normal. If the error persists, one of the three error reporting mechanisms above will persist in which case you may wish to use <strong><a href="#blerror-return-most-recent-error-if-any">BL_Error</a></strong> to determine the nature of the error (e.g. link down, power failure etc) and report it to the user to take appropriate action.</p>
+
+<p>Most importantly, error detection and recovery is easy:</p>
+
+<ol>
+<li>Minor errors (e.g. dropped packets) are handled automatically,</li>
+<li>Major errors (e.g power failure) are recovered automatically (when restored) </li>
+<li>No client side error callbacks or exception handlers are required,</li>
+<li>BitScope is <a href="http://en.wikipedia.org/wiki/Idempotence">idempotent</a> so recovery coding is simple.</li>
+</ol>
+
+<p>The last point simply means you can program BitScope via the library the same way repeatedly and it will always do the same thing in response.</p>
+
+
+
+<h2 id="code-examples">Code Examples</h2>
+
+<p>Programming with library is very easy.</p>
+
+<p>Here is a C example that captures a single analog channel:</p>
+
+<pre><code>/* capture.c -- BitLib 2.0 Analog Capture (Single Channel) (ANSI C) */
+
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;bitlib.h&gt; /* required */
+
+#define MY_DEVICES 1 /* open one device only */
+#define MY_PROBE_FILE "" /* default probe file if unspecified */
+
+#define MY_DEVICE 0
+#define MY_CHANNEL 0
+#define MY_MODE BL_MODE_FAST
+#define MY_RATE 1000000 /* capture sample rate */
+#define MY_SIZE 4 /* number of samples to capture */
+
+int main(int argc, char *argv[]) {
+   /* 
+    * Open and select the first channel on the first device.
+    */
+    printf("\nStarting: Attempting to open %d device%s...\n",MY_DEVICES,MY_DEVICES!=1?"s":"");
+    if ( ! BL_Open(MY_PROBE_FILE,MY_DEVICE) ) {
+        printf("Failed to find a devices.\n");
+        goto exit;
+    }
+    if ( BL_Select(BL_SELECT_DEVICE,MY_DEVICE) != MY_DEVICE ) {
+        printf("Failed to select device %d.\n",MY_DEVICE);
+        goto exit;
+    }
+    if ( BL_Select(BL_SELECT_CHANNEL,MY_CHANNEL) != MY_CHANNEL ) {
+        printf("Failed to select channel %d.\n",MY_CHANNEL);
+        goto exit;
+    }   
+   /* 
+    * Prepare to capture one channel...
+    */
+    if ( BL_Mode(MY_MODE) != MY_MODE ) {
+        printf("Failed to select mode %d.\n",MY_MODE);
+        goto exit;      
+    }
+    BL_Intro(BL_ZERO); /* optional, default BL_ZERO */
+    BL_Delay(BL_ZERO); /* optional, default BL_ZERO */
+    BL_Rate(MY_RATE); /* optional, default BL_MAX_RATE */
+    BL_Size(MY_SIZE); /* optional, default BL_MAX_SIZE */
+    BL_Select(BL_SELECT_CHANNEL,MY_CHANNEL); /* choose the channel */
+    BL_Trigger(BL_ZERO,BL_TRIG_RISE); /* optional when untriggered */
+    BL_Select(BL_SELECT_SOURCE,BL_SOURCE_POD); /* use the POD input */
+    BL_Range(BL_Count(BL_COUNT_RANGE)); /* maximum range */
+    BL_Offset(BL_ZERO); /* optional, default 0 */
+    BL_Enable(TRUE); /* at least one channel must be initialised */
+   /* 
+    * Capture and acquire the data...
+    */
+    printf("   Trace: %d samples @ %.0fHz = %fs\n",BL_Size(BL_ASK),BL_Rate(BL_ASK), BL_Time(BL_ASK));
+    if ( BL_Trace(BL_TRACE_FORCED,BL_SYNCHRONOUS) ) { /* capture data (without a trigger) */
+        int i, n = MY_SIZE; double d[n]; /* let's get 5 samples */
+        BL_Select(BL_SELECT_CHANNEL,MY_CHANNEL); /* optional if only one channel */
+        if ( BL_Acquire(n, d)  == n ) { /* acquire (i.e. dump) the capture data */
+            printf("Acquired:");
+            for (i = 0; i &lt; n; i++)
+                printf(" %f", d[i]);
+            printf("\n\n");
+        }
+    }
+    printf("Data acquisition complete. Dump Log...\n");
+    printf("%s\n",BL_Log());
+  exit:
+    BL_Close(); /* call this to release library resources */
+    return 0;
+}
+</code></pre>
+
+<p>and this is a Python example that dumps a report about a device:</p>
+
+<pre><code>'''report.py -- BitLib 2.0 Capture Device Report Generator (Python)'''
+
+from bitlib import *
+
+MY_DEVICE = 0 # one open device only
+MY_CHANNEL = 0 # channel to capture and display
+MY_PROBE_FILE = "" # default probe file if unspecified 
+MY_MODE = BL_MODE_FAST # preferred trace mode
+MY_RATE = 1000000 # default sample rate we'll use for capture.
+MY_SIZE = 5 # number of samples we'll capture (simply a connectivity test)
+TRUE = 1
+
+MODES = ("FAST","DUAL","MIXED","LOGIC","STREAM")
+SOURCES = ("POD","BNC","X10","X20","X50","ALT","GND")
+
+def main(argv=None):
+    #
+    # Open the first device found (only)
+    #
+    print "\nStarting: Attempting to open one device..."
+    if BL_Open(MY_PROBE_FILE,1):
+        #
+        # Open succeeded (report versions).
+        #
+        print " Library: %s (%s)" % (
+            BL_Version(BL_VERSION_LIBRARY),
+            BL_Version(BL_VERSION_BINDING))
+        #
+        # Select this device (optional, it's already selected).
+        #
+        BL_Select(BL_SELECT_DEVICE,MY_DEVICE)
+        #
+        # Report the link, device and channel information.
+        #
+        print "    Link: %s" % BL_Name(0)
+        print "BitScope: %s (%s)" % (BL_Version(BL_VERSION_DEVICE),BL_ID())
+        print "Channels: %d (%d analog + %d logic)" % (
+            BL_Count(BL_COUNT_ANALOG)+BL_Count(BL_COUNT_LOGIC),
+            BL_Count(BL_COUNT_ANALOG),BL_Count(BL_COUNT_LOGIC))
+        #
+        # Determine which modes the device supports.
+        #
+        print "   Modes:" + "".join(["%s" % (
+            (" " + MODES[i]) if i == BL_Mode(i) else "") for i in range(len(MODES))])
+        #
+        # Report canonic capture specification in LOGIC (if supported) or FAST mode (otherwise.
+        #
+        BL_Mode(BL_MODE_LOGIC) == BL_MODE_LOGIC or BL_Mode(BL_MODE_FAST)
+        print " Capture: %d @ %.0fHz = %fs (%s)" % (
+            BL_Size(),BL_Rate(),
+            BL_Time(),MODES[BL_Mode[]])
+        #
+        # Report the maximum offset range (if the device supports offsets).
+        #
+        BL_Range(BL_Count(BL_COUNT_RANGE));
+        if BL_Offset(-1000) != BL_Offset(1000):
+            print "  Offset: %+.4gV to %+.4gV" % (
+                BL_Offset(1000), BL_Offset(-1000))
+        #
+        # Report the input source provided by the device and their respective ranges.
+        #
+        for i in range(len(SOURCES)):
+            if i == BL_Select(2,i):
+                print "     %s: " % SOURCES[i] + " ".join(["%5.2fV" % BL_Range(n) for n in range(BL_Count(3)-1,-1,-1)])
+        #
+        # Set up to capture MY_SIZE samples at MY_RATE from CH-A via the POD input using the highest range.
+        #
+        BL_Mode(MY_MODE) # prefered trace mode
+        BL_Intro(BL_ZERO); # optional, default BL_ZERO
+        BL_Delay(BL_ZERO); # optional, default BL_ZERO
+        BL_Rate(MY_RATE); # optional, default BL_MAX_RATE
+        BL_Size(MY_SIZE); # optional default BL_MAX_SIZE
+        BL_Select(BL_SELECT_CHANNEL,MY_CHANNEL); # choose the channel
+        BL_Trigger(BL_ZERO,BL_TRIG_RISE); # optional when untriggered */
+        BL_Select(BL_SELECT_SOURCE,BL_SOURCE_POD); # use the POD input */
+        BL_Range(BL_Count(BL_COUNT_RANGE)); # maximum range
+        BL_Offset(BL_ZERO); # optional, default 0
+        BL_Enable(TRUE); # at least one channel must be initialised 
+        #
+        # Perform an (untriggered) trace (this is the actual data capture).
+        #
+        BL_Trace()
+        #
+        # Acquire (i.e. upload) the captured data (which may be less than MY_SIZE!).
+        #
+        DATA = BL_Acquire()
+        print " Data(%d): " % MY_SIZE + ", ".join(["%f" % DATA[n] for n in range(len(DATA))])
+        print "Complete: trace and acquisition complete. Dump the log...\n"
+        print "%s" % BL_Log()
+        #
+        # Close the library to release resources (we're done).
+        #
+        print "Finished: close the library to release resources."
+        BL_Close()
+    else:
+        print "  FAILED: device not found (check your probe file)."
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main())
+</code></pre>
+
+<p>There are other examples included with the packaged library for each platform.</p>
+
+
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+
+
+<h3 id="the-library-cant-find-my-bitscope">The Library can’t find my BitScope!</h3>
+
+<p>Is the <a href="#link-specification-syntax">link specification</a> you have given to <a href="#blopen-open-one-or-more-devices">BL_Open</a> correct?</p>
+
+<p>Are you using a <a href="#probe-files-and-link-specifications">probe file</a>? Does it exist? Does it have the correct <a href="#link-specification-syntax">link specification</a>? </p>
+
+<p>Does the serial or USB port for the BitScope exist on your system when the BitScope is connected? Does your login name have permission to access it? If using a Network BitScope is the network address routable (does it “<a href="http://en.wikipedia.org/wiki/Ping_%28networking_utility%29">ping</a>“) from your system?</p>
+
+<p>Is your BitScope powered on and does it have a good quality power supply? Are the USB or Network and power cables you are using okay? Is your USB port working? Have you tried a different PC? Does other BitScope software connect okay?</p>
+
+<p>Drop us a line any time at support@bitscope.com if you still have problems!</p>
+
+
+
+<h3 id="which-bitscope-am-i-really-connected-to">Which BitScope am I really connected to?</h3>
+
+<p>Sometimes when opening a BitScope you get what looks like the wrong one. It probably is. This is likely due to the use of <a href="#probe-file-defaults">probe file defaults</a>. Call <a href="#blopen-open-one-or-more-devices">BL_Open</a> with an explicit <a href="#link-specification-syntax">link specification</a> for the BitScope you want to avoid this possibility.</p>
+
+
+
+<h3 id="why-does-it-take-so-long-to-connect">Why does it take so long to connect?</h3>
+
+<p>If the <a href="#probe-files-and-link-specifications">probe file</a> specifies a lot of links which are invalid or the devices they refer to are not available, <a href="#blopen-open-one-or-more-devices">BL_Open</a> may take a long time to work through them all (in the order they appear in the probe file) until it reaches the one that ultimate connects. Note: using probe file that has <em>no correct value</em> can result in the same thing due to <a href="#probe-file-defaults">defaults</a>.</p>
+
+<p>If this is the case, simply comment out (preceed with #) each link you don’t need (or delete them entirely) or use an explicit <a href="#link-specification-syntax">link description</a> instead of the probe file when calling <a href="#blopen-open-one-or-more-devices">BL_Open</a>.</p>
+
+
+
+<h3 id="what-parameter-values-does-the-library-actually-use">What parameter values does the library actually use?</h3>
+
+<p>When programming a trace the <a href="#blrate-assign-the-sample-rate">sample rate</a>, <a href="#blsize-assign-the-capture-size-samples">trace size</a> and other parameters such as <a href="#blintro-assign-the-pre-trigger-size-intro-region">pre-trigger intro</a> <em>may be constrained by what the device is capable of delivering</em>.</p>
+
+<p>For all such parameters you must <em>check the return value of the parameter when you assign a new value</em> because <em>the return value is what the library will actually use</em>. </p>
+
+<p>Usually the requested and returned value will be the same but if you run up against the device constraints they may be different. Further, there are situations where changing one parameter (e.g. <a href="#blenable-change-channel-enable-status">channel enable</a> or <a href="#blmode-select-and-trace-mode">trace mode</a>) can alter the constraints that apply to others (e.g. <a href="#blrate-assign-the-sample-rate">sample rate</a> or <a href="#blsize-assign-the-capture-size-samples">trace size</a>). </p>
+
+<p>The <strong>general rule</strong> is; if <a href="#2-device-programming-and-setup">device setup parameters</a> are changed some <a href="#3-trace-programming-and-capture">trace parameters</a> may need to be reprogrammed. Follow the <a href="#bitscope-programming">recommended programming sequence</a> to avoid any confusion.</p>
+
+
+
+<h3 id="can-i-use-the-library-in-a-multi-threaded-environment">Can I use the library in a multi-threaded environment?</h3>
+
+<p>Yes, but you need to know what you’re doing!</p>
+
+<p>Access to the library functions is thread-safe but you need to be aware that many functions rely on the device, channel or input source being preselected by <a href="#blselect-select-a-device-channel-or-source">BL_Select</a> and this can lead to a race condition in your code if you’re not careful.</p>
+
+<p>To the extent we recommend you use multi-threaded programming we advise that all access to the library be confined to one thread with the call to the <em>business end</em> of the library (<a href="#bltrace-initiate-capture">BL_Trace</a> and <a href="#blstate-return-capture-engine-state">BL_State</a>) being available for use in another thread.</p>
+
+<p>It’s safe to call <em>BL_Trace <a href="#bltrace-initiate-capture">synchronously</a> in another thread</em> and <em>use BL_State in the main thread</em> (or any other multi-threaded synchronization mechanism) to tell the main thread when the trace has completed.</p>
+
+<p>However in general you don’t need to do this; instead, call BL_Trace <a href="#bltrace-initiate-capture">asynchronously</a> from the main thread and poll (e.g. in a timer handler) BL_State to check progress.</p>
+
+
+
+<h3 id="help-i-dont-understand-how-blxxxx-works">Help! I don’t understand how BL_xxxx works?</h3>
+
+<p>Email us any time at <a href="mailto:support@bitscope.com">support@bitscope.com</a> for assistance.</p>
+
+
+
+<h3 id="this-is-not-working-ive-found-a-bug">This is not working, I’ve found a Bug!</h3>
+
+<p>You may well have done. Please email full details to <a href="mailto:support@bitscope.com">support@bitscope.com</a>!</p>
+
+
+
+<h2 id="library-reference">Library Reference</h2>
+
+
+
+<h3 id="blacquire-dump-data-from-the-device">BL_Acquire - dump data from the device</h3>
+
+<p>This is the primary <em>data acquisition</em> function.</p>
+
+<pre><code>int BL_Acquire(int ASize, double * AData); /* C/C++ Prototype */
+function BL_Acquire(ASize : Integer; AData : PDouble) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>Call <strong>BL_Acquire</strong> to dump data from a channel to the host (<a href="#Acquire">Acquire</a>) <em>after the data has been captured by the device</em> (<a href="#bltrace-initiate-capture">BL_Trace</a>). Data is dumped from the selected channel on the selected device (<a href="#blselect-select-a-device-channel-or-source">BL_Select</a>). To dump data from multiple channels, possibly on multiple devices, loop through and select each channel on each device and call BL_Acquire at each iteration.</p>
+
+<p>Acquired data is written to the array in memory pointed to by <strong>AData</strong>. The number of samples acquired is <strong>ASize</strong>. The size of the array provided <em>must be at least</em> <strong>ASize</strong>.  The dump commences at the first sample in the channel buffer unless a different (positive) starting index is specified (<a href="#blindex-assign-the-buffer-offset-for-dumps">BL_Index</a>). The sum of the dump size and start index must be less than or equal to the total trace size (<a href="#blsize-assign-the-capture-size-samples">BL_Size</a>).</p>
+
+<p>The return value is the number of samples acquired. It equals the number of samples requested (<strong>ASize</strong>) unless:</p>
+
+<ol>
+<li>more samples than were captured were requested, or</li>
+<li>the trace was terminated early (<a href="#blhalt-all-any-pending-or-prevailing-device-activity">BL_Halt</a> or <em>timeout</em>), or</li>
+<li>an error occured when communicating with the device.</li>
+</ol>
+
+<p>If 3 occurs you may need to take steps to <a href="#errors">recover the error</a>. Like <a href="#bltrace-initiate-capture">BL_Trace</a> (when called <em>synchronously</em>) this function may take a while to complete. How long it takes depends on the speed of the link between the host and the device.</p>
+
+
+
+<h3 id="blclose-close-all-open-devices">BL_Close - close all open devices</h3>
+
+<p>Close all open device connections and free all resources. </p>
+
+<pre><code>void BL_Close (void); /* C/C++ Prototype */
+procedure BL_Close; { Pascal Prototype }
+</code></pre>
+
+<p>If you wish to close only one of several devices, close them all and reopen those you wish to continue using. In most situations, retaining an open device for later use is not expensive.</p>
+
+
+
+<h3 id="blcount-count-devices-channels-or-ranges">BL_Count - count devices, channels, or ranges</h3>
+
+<p>Count available devices, channels and ranges.</p>
+
+<pre><code>int BL_Count(int AType); /* C/C++ Prototype */
+function BL_Count(AType : Integer) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>When one or more devices have been opened (<a href="#blopen-open-one-or-more-devices">BL_Open</a>) one usually needs to know how many opened successfully. For each device one may also need to know many channels and how many analog ranges are available. </p>
+
+<p><strong>BL_Count</strong> returns a count based on its <strong>AType</strong> argument:</p>
+
+<ul>
+<li><strong>BL_COUNT_DEVICE</strong> - successfully opened devices</li>
+<li><strong>BL_COUNT_ANALOG</strong> - analog channels on the selected device</li>
+<li><strong>BL_COUNT_LOGIC</strong> - logic channels on the selected device</li>
+<li><strong>BL_COUNT_RANGE</strong> - number of analog ranges on the selected channel</li>
+</ul>
+
+<p>When counting channels or ranges a device must first be selected (<a href="#blselect-select-a-device-channel-or-source">BL_Select</a>). </p>
+
+
+
+<h3 id="blcoupling-select-the-channel-source-coupling">BL_Coupling - select the channel source coupling</h3>
+
+<p>Choose  DC, AC or RF coupling on the <a href="#blselect-select-a-device-channel-or-source">selected channel</a>.</p>
+
+<pre><code>int BL_Coupling(int ACoupling) : Integer; /* C/C++ Prototype */
+function BL_Coupling(ACoupling : Integer = BL_ASK) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>Many BitScope models offer software selectable DC or AC coupling for their BNC terminated inputs. Some others offer an RF coupling option.</p>
+
+<p><strong>BL_Coupling</strong> selects the coupling used via <strong>ACoupling</strong> argument:</p>
+
+<ul>
+<li><strong>BL_COUPLING_DC</strong> - direct connection for DC signals (the default)</li>
+<li><strong>BL_COUPLING_AC</strong> - AC connection (eliminates DC bias)</li>
+<li><strong>BL_COUPLING_RF</strong> - RF connection for very high frequencies</li>
+</ul>
+
+<p>BL_Coupling <strong>returns the newly selected coupling</strong> <em>if successful</em> or the prevailing coupling otherwise, so check the return value to determine if the requested coupling is available. Use <strong>BL_ASK</strong> to enquire the prevailing coupling without changing it.</p>
+
+
+
+<h3 id="bldelay-assign-post-trigger-delay">BL_Delay - assign post-trigger delay</h3>
+
+<p>Apply an optional <em>post-trigger delay</em> the trace.</p>
+
+<pre><code>double BL_Delay(double ADelayTime); /* C/C++ Prototype */
+function BL_Delay(ADelayTime : Double) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>All BitScopes offer a facility to insert a precise delay after the trigger before waveform capture proceeds (in most <a href="#blmode-select-and-trace-mode">trace modes</a>).</p>
+
+<p><strong>BL_Delay</strong> establishes this post-trigger delay (<strong>ADelayTime</strong>, in seconds). It returns the same value <em>if the device can support it</em>, otherwise the nearest value is returned. </p>
+
+<p><strong>Always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+<p>To specify that no post trigger delay should be used, specify  <strong>BL_ZERO</strong>. </p>
+
+<p>To specify a <em>pre-trigger capture duration</em> use <a href="#blintro-assign-the-pre-trigger-size-intro-region">BL_Intro</a>.</p>
+
+
+
+<h3 id="blenable-change-channel-enable-status">BL_Enable - change channel enable status</h3>
+
+<p>Enable or disable a channel from participating in a trace.</p>
+
+<pre><code>bool BL_Enable(book AEnable); /* C/C++ Prototype */
+function BL_Enable(AEnable : Boolean) : Boolean; { Pascal Prototype }
+</code></pre>
+
+<p>Use <strong>BL_Enable</strong> to enable or disable the <a href="#BL_Select">selected channel on the selected device</a> from particpating in a trace. It’s generally good idea to disable channels you are not using because it frees up device buffers and other resources for the other channels.</p>
+
+<p>The channel enable status should be established at the <a href="#Setup">device programming and setup step</a>, i.e. <strong>before</strong> assigning any of the <a href="#Trace">trace parameters</a>.</p>
+
+<p>If you change a channel’s enable state, it is recommended that you also reassign trace parameters such sample rate and size even if the intended values remain unchanged because <a href="#Constraints">constraints may apply</a>.</p>
+
+
+
+<h3 id="blerror-return-most-recent-error-if-any">BL_Error - return most recent error (if any)</h3>
+
+<p>Report the most recent error code (if any).</p>
+
+<pre><code>int BL_Error (void); /* C/C++ Prototype */
+function BL_Error : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>In normal operation <a href="#error-recovery">errors can occur</a>. In general you don’t need to know what caused the error beyond whether it’s <a href="http://en.wikipedia.org/wiki/List_of_military_slang_terms#SNAFU">SNAFU</a> or <a href="http://en.wikipedia.org/wiki/List_of_military_slang_terms#FUBAR">FUBAR</a> and this level of detail is reported by <a href="#blstate-return-capture-engine-state">BL_State</a>.</p>
+
+<p>However, when encountering a FUBAR class error you may need to report to the user an error code which will tell them what to fix to recover from it (e.g. restore device power). In this case the return value of <strong>BL_Error</strong> provides this information.</p>
+
+
+
+<h3 id="blhalt-all-any-pending-or-prevailing-device-activity">BL_Halt - all any pending or prevailing device activity</h3>
+
+<p>Terminate all activity on the <a href="#blselect-select-a-device-channel-or-source">selected device</a>.</p>
+
+<pre><code>bool BL_Halt(void); /* C/C++ Prototype */
+function BL_Halt : Boolean; { Pascal Prototype }
+</code></pre>
+
+<p>Call <strong>BL_Halt</strong> to terminate any pending or prevailing device activity. Returns TRUE if successful, FALSE otherwise. BL_Halt returns FALSE only if an error occured when talking to the device; in this case you may need to <a href="#error-recovery">recover the error</a>. BL_Halt does not need to be called if the <a href="#blstate-return-capture-engine-state">capture engine state</a> is not BL_STATE_ACTIVE but it is safe to call it at any time.</p>
+
+
+
+<h3 id="blid-return-the-selected-device-id">BL_ID - return the selected device ID</h3>
+
+<p>Read the unique ID of the <a href="#BL_Select">selected device</a>.</p>
+
+<pre><code>char * BL_ID(void); /* C/C++ Prototype */
+function BL_ID : PAnsiChar; { Pascal Prototype }
+</code></pre>
+
+<p>Every BitScope device has a unique ID. <strong>BL_ID</strong> returns this ID. </p>
+
+<p>This information is useful to record with captured data so as to keep a record of which device produced that data. It may also be used in a <a href="#links">link specification</a> to ensure one connects to a uniquely identified device.</p>
+
+
+
+<h3 id="blindex-assign-the-buffer-offset-for-dumps">BL_Index - assign the buffer offset (for dumps)</h3>
+
+<p>Assign an offset in the capture buffer from which to <a href="#BL_Acquire">acquire data</a>.</p>
+
+<pre><code>bool BL_Index(AAddr : Integer); /* C/C++ Prototype */
+function BL_Index(AAddr : Integer) : Boolean; { Pascal Prototype }
+</code></pre>
+
+<p>When dumping data from the device buffer using <a href="#blacquire-dump-data-from-the-device">BL_Acquire</a> is may be desirable to commence the dump from a sample other than the first. Use <strong>BL_Index</strong> to specify this offset.</p>
+
+
+
+<h3 id="blinitialize-initialize-the-library-optional">BL_Initialize - initialize the library (optional)</h3>
+
+<p>Initialize the library infrastructure for use.</p>
+
+<pre><code>void BL_Initialize[]; /* C/C++ Prototype */
+procedure BL_Initialize; { Pascal Prototype }
+</code></pre>
+
+<p>This function is optional; it is called implicitly when the first <a href="#BL_Open">device is opened</a>. It may be called explicit before any devices are opened if preferred.</p>
+
+
+
+<h3 id="blintro-assign-the-pre-trigger-size-intro-region">BL_Intro - assign the pre-trigger size (intro region)</h3>
+
+<p>Apply an optional <em>pre-trigger capture duration</em> the <a href="#Trace">trace</a>.</p>
+
+<pre><code>double function BL_Intro(double APreTrigger); /* C/C++ Prototype */
+function BL_Intro(APreTrigger : Double) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>BitScopes offer a facility to capture <em>before the trigger</em> (in most <a href="#BL_Mode">trace modes</a>). <strong>BL_Intro</strong> establishes this pre-trigger capture duration (<strong>APreTrigger</strong>, in seconds). It returns the same value <em>if the device can support it</em>, otherwise the nearest value is returned. </p>
+
+<p><strong>Always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+<p>To specify that no pre-trigger capture should be used, specify  <strong>BL_ZERO</strong>. </p>
+
+<p>To specify a <em>post-trigger delay</em> use <a href="#blintro-assign-the-pre-trigger-size-intro-region">BL_Intro</a>.</p>
+
+
+
+<h3 id="bllog-dump-the-pending-log">BL_Log - dump the pending log</h3>
+
+<p>Dump the library <a href="#diagnostics">diagnostic log</a>. </p>
+
+<pre><code>char * BL_Log(Void); /* C/C++ Prototype */
+function BL_Log : PAnsiChar; { Pascal Prototype }
+</code></pre>
+
+<p>In developer editions of the library the internal operation of the library is logged. <strong>BL_Log</strong> returns a dump of this information to assist with program development using the library. See <a href="#diagnostics">Diagnostics</a> for more information.</p>
+
+
+
+<h3 id="blmode-select-and-trace-mode">BL_Mode - select and trace mode</h3>
+
+<p>Choose the <strong>trace mode</strong> to be used for the next capture.</p>
+
+<pre><code>int function BL_Mode(int AMode); /* C/C++ Prototype */
+function BL_Mode(AMode : Integer = BL_MODE_FAST) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>All BitScope models offer a range of <strong>trace modes</strong>. Trace modes define how the device captures the input signals:</p>
+
+<ul>
+<li><strong>BL_MODE_FAST</strong> - analog capture at the fastest rates available</li>
+<li><strong>BL_MODE_DUAL</strong> - dual channel sample synchronous analog capture</li>
+<li><strong>BL_MODE_MIXED</strong> - mixed analog + logic signal capture</li>
+<li><strong>BL_MODE_LOGIC</strong> - logic only capture mode</li>
+<li><strong>BL_MODE_STREAM</strong> - streaming mixed signal capture</li>
+</ul>
+
+<p>All models offer <strong>BL_MODE_FAST</strong> and <strong>BL_MODE_MIXED</strong>. The other modes are available on some models and not others; it depends on the hardware design of each model. See the hardware guide for your device. </p>
+
+<p><strong>BL_MODE_FAST</strong> is recommended for analog waveform capture only and <strong>BL_MODE_MIXED</strong> when also capturing logic data. <strong>BL_MODE_DUAL</strong> is recommended for single A/D devices when sample synchronous analog waveform capture is required. <strong>BL_MODE_LOGIC</strong> is recommend when capturing logic only and <strong>BL_MODE_STREAM</strong> is used for continuous waveform capture.</p>
+
+<p>It is important to establish the trace mode at the <a href="#Setup">device programming</a> step because the choice of mode changes the <a href="#Constraints">device constraints</a> that may apply.</p>
+
+
+
+<h3 id="blname-return-the-device-link-name">BL_Name - return the device link name</h3>
+
+<p>Read the canonic link specification of the <a href="#BL_Select">selected device</a>.</p>
+
+<pre><code>char * BL_Name(char * AStr); /* C/C++ Prototype */
+function BL_Name(AStr : PAnsiChar) : PAnsiChar; { Pascal Prototype }
+</code></pre>
+
+<p>The host connects to each BitScope device accorind to a <a href="#links">link specification</a>. </p>
+
+<p>Call BL_Name to return the canonic link specification.</p>
+
+
+
+<h3 id="bloffset-assign-channel-offset">BL_Offset - assign channel offset</h3>
+
+<p>Apply a voltage offset to the <a href="#BL_Select">selected channel</a></p>
+
+<pre><code>double BL_Offset(double AValue); /* C/C++ Prototype */
+function BL_Offset(AValue : Double) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>Most BitScope models allow an input offset to be applied to the signal captured on analog channels. <strong>BL_Offset</strong> assigns this offset (<strong>AValue</strong>, in volts) to the selected channel on the selected device. It returns the same value <em>if the device can support it</em>, otherwise the nearest value is returned. </p>
+
+<p><strong>Always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+<p>To specify that no offset should be applied, specify  <strong>BL_ZERO</strong>. </p>
+
+
+
+<h3 id="blopen-open-one-or-more-devices">BL_Open - open one or more devices</h3>
+
+<p>Open one or more device according supplied <a href="#link-specification-syntax">link specifications</a>.</p>
+
+<pre><code>int BL_Open(char * AProbeStr; int ACount); /* C/C++ Prototype */
+function BL_Open(AProbeStr : PAnsiChar; ACount : Integer = 1) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>Call <strong>BL_Open</strong> to open a device specified by <strong>AProbeStr</strong>. If the second argument (<strong>ACount</strong>) is provided it tells BL_Open how many devices to open (defaults to 1).</p>
+
+<p>The first argument can be:</p>
+
+<ol>
+<li>omitted, in which case the default <a href="#probe-files-and-link-specifications">probe file</a> is used,</li>
+<li>the canonic name of the probe file (in a standard location)</li>
+<li>the full name of the probe file (in any location)</li>
+<li>a literal <a href="#link-specification-syntax">link specification</a> or</li>
+<li>a colon separated list of link specifications.</li>
+</ol>
+
+<p>BL_Open attempts to open the devices using these techniques in the order listed. </p>
+
+<p>It returns the number of devices sucessfully opened. </p>
+
+<p>Each opened device may then be selected with an index from 0 to N-1 where N is the value returned by BL_Open or <a href="#blcount-count-devices-channels-or-ranges">BL_Count</a> (BL_COUNT_DEVICES).</p>
+
+
+
+<h3 id="blrange-select-the-channel-range">BL_Range - select the channel range</h3>
+
+<p>Select the analog input range the <a href="#blselect-select-a-device-channel-or-source">selected source</a></p>
+
+<pre><code>double BL_Range(int AIndex); /* C/C++ Prototype */
+function BL_Range(AIndex : Integer) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>All BitScope models provide a number of analog input ranges which scale the signal prior to capture and conversion to the digital domain.</p>
+
+<p>Use <strong>BL_Range</strong> to assign the desired range (<strong>AIndex</strong>) to the selected source. The source index used must be between 0 and <a href="#blcount-count-devices-channels-or-ranges">BL_Count</a> (BL_COUNT_RANGE)-1;</p>
+
+<p>BL_Range returns the full voltage span of the selected range.</p>
+
+
+
+<h3 id="blrate-assign-the-sample-rate">BL_Rate - assign the sample rate</h3>
+
+<p>Assign the capture sample rate for the next trace.</p>
+
+<pre><code>double function BL_Rate(double ASampleRate); /* C/C++ Prototype */
+function BL_Rate(ASampleRate : Double = BL_ASK) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>The capture sample rate is a fundamentally important trace parameter. </p>
+
+<p>It <em>must always be specified</em> and it <em>should be the first parameter assigned</em> when preparing a new trace (if different from the previous trace).</p>
+
+<p><strong>BL_Rate</strong> establishes the <em>preferred sample rate</em> (<strong>ASampleRate</strong>, in Hz). It returns the same value <em>if the device can support it</em>, otherwise the nearest value is returned.</p>
+
+<p>To choose the highest sample rate supported by the <a href="#blselect-select-a-device-channel-or-source">selected device</a> in the <a href="#blmode-select-and-trace-mode">current mode</a>, specify <strong>BL_MAX_RATE</strong>. To enquire what the prevailing sample rate is without changing it, specify  <strong>BL_ASK</strong>. Regardless of how BL_Rate is called <strong>always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+
+
+<h3 id="blselect-select-a-device-channel-or-source">BL_Select - select a device, channel or source</h3>
+
+<p>Select the a device, channel or source for subsequent use.</p>
+
+<pre><code>int BL_Select(int AType, int AIndex); /* C/C++ Prototype */
+function BL_Select(AType : Integer; AIndex : Integer = BL_ASK ) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>The library makes available multiple devices, channels and input sources. Most API functions operate on one of these at a time. Use <strong>BL_Select</strong> to choose which one.</p>
+
+<p><strong>BL_Selects</strong> chooses which entity type to select via its first (<strong>AType</strong>) argument:</p>
+
+<ul>
+<li><strong>BL_SELECT_DEVICE</strong> - select a device</li>
+<li><strong>BL_SELECT_CHANNEL</strong> - select a channel on the (previously) selected device</li>
+<li><strong>BL_SELECT_SOURCE</strong> - select an input source of the selected channel</li>
+</ul>
+
+<p>The entity of that type is selected via the second (<strong>AIndex</strong>) argument.</p>
+
+<p>BL_Select <strong>returns the index of the selected entity</strong> <em>if the selection was successful</em>. The prevailing selection is returned unchanged otherwise, so check the return value is the same as the AIndex argument to confirm the new selection was successful. Use <strong>BL_ASK</strong> to enquire the prevailing selection without changing it.</p>
+
+<p><strong>Devices</strong> enumerate from <strong>0 to <a href="#blcount-count-devices-channels-or-ranges">BL_Count</a> (BL_COUNT_DEVICES)-1</strong>.</p>
+
+<p><strong>Analog channels</strong> enumerate from <strong>0 to 3</strong> and <strong>logic channels</strong> from <strong>4 to 11</strong>.</p>
+
+<p><strong>Sources</strong> are selected from a <strong>pre-defined set of options</strong>:</p>
+
+<ul>
+<li><strong>BL_SOURCE_POD</strong> - analog or logic channel POD input</li>
+<li><strong>BL_SOURCE_BNC</strong> - analog channel BNC input (if available)</li>
+<li><strong>BL_SOURCE_X10</strong> - analog input prescaled by 10</li>
+<li><strong>BL_SOURCE_X20</strong> - analog input prescaled by 20</li>
+<li><strong>BL_SOURCE_X50</strong> - analog input prescaled by 50</li>
+<li><strong>BL_SOURCE_ALT</strong> - alternate input (data acquisition)</li>
+<li><strong>BL_SOURCE_GND</strong> - ground reference input</li>
+</ul>
+
+<p>Not all device types support all sources. Check the return index when attempting to select one to see if it’s available.</p>
+
+
+
+<h3 id="blsize-assign-the-capture-size-samples">BL_Size - assign the capture size (samples)</h3>
+
+<p>Assign the capture size for the next trace.</p>
+
+<pre><code>int BL_Size(int ASize); /* C/C++ Prototype */
+function BL_Size(ASize : Integer = BL_ASK) : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>The capture size is a fundamentally important trace parameter. It <em>must always be specified</em> and it <em>should be the second parameter assigned</em> (after <a href="#blrate-assign-the-sample-rate">BL_Rate</a>) when preparing a new trace (if different from the previous trace). </p>
+
+<p><strong>BL_Size</strong> establishes the <em>preferred trace size</em> (<strong>ASize</strong>, in samples). It returns the same value <em>if the device can support it</em>, otherwise the nearest value is returned. To choose the largest size supported by the <a href="#blselect-select-a-device-channel-or-source">selected device</a> in the <a href="#blmode-select-and-trace-mode">current mode</a>, specify <strong>BL_MAX_SIZE</strong>. To enquire what the prevailing size is without changing it, specify <strong>BL_ASK</strong>. Regardless of how BL_Size is called <strong>always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+
+
+<h3 id="blstate-return-capture-engine-state">BL_State - return capture engine state</h3>
+
+<p>Report capture engine state while tracing.</p>
+
+<pre><code>int BL_State (void); /* C/C++ Prototype */
+function BL_State : Integer; { Pascal Prototype }
+</code></pre>
+
+<p>When a <a href="#BL_Trace">trace is initiated</a> <a href="#bltrace-initiate-capture">asynchronously</a> the state of the capture engine is needed to be able to know when the trace has completed and <a href="#BL_Acquire">acquisition can proceed</a>. Use <strong>BL_State</strong> to obtain this information. <em>BL_State always returns immediately</em> reporting the capture engine is:</p>
+
+<ul>
+<li><strong>BL_STATE_IDLE</strong> - idle and ready to program</li>
+<li><strong>BL_STATE_ACTIVE</strong> - actively capturing data</li>
+<li><strong>BL_STATE_DONE</strong>  - completed capturing data successfully</li>
+<li><strong>BL_STATE_ERROR</strong> - completed capturing data unsuccessfully</li>
+</ul>
+
+<p>The <em>only state in which it is valid to call <a href="#blacquire-dump-data-from-the-device">BL_Acquire</a></em> is <strong>BL_STATE_DONE</strong>.  This state means the trace completed successfully, either because a trigger was seen or a timeout occured but in either case data may be acquired from the device.</p>
+
+<p>If <strong>BL_STATE_ERROR</strong> is reported <em>an error occured during the most recent trace</em>. The trace has completed but the data (if any) cannot be relied upon as reliable. Call <a href="#blerror-return-most-recent-error-if-any">BL_Error</a> to learn more about the error and what you may need to do to recover.</p>
+
+<p>While <strong>BL_STATE_ACTIVE</strong> is reported <em>you must not call any other function</em> to access the device unless you <a href="#BL_Halt">halt it first</a>. If <strong>BL_STATE_IDLE</strong> is reported you can program the device as required but data is not guaranteed to be available for BL_Acquire.</p>
+
+<p><strong>BL_State</strong> <em>may be called at any time after the library has been initialized and device selected</em>. If <a href="#bltrace-initiate-capture">BL_Trace</a> is called <a href="#bltrace-initiate-capture">synchronously</a> <em>it reports the same information</em> except in this case the BL_STATE_ACTIVE state will never be reported (because it prevails only for as long as the <a href="#bltrace-initiate-capture">synchronous call</a> to BL_Trace does).</p>
+
+
+
+<h3 id="bltime-assign-the-capture-duration-seconds">BL_Time - assign the capture duration (seconds)</h3>
+
+<p>Enquire the capture duration for the next <a href="#Trace">trace</a>.</p>
+
+<pre><code>double BL_Time(double ACaptureTime); /* C/C++ Prototype */
+function BL_Time(ACaptureTime : Double = BL_ASK) : Double; { Pascal Prototype }
+</code></pre>
+
+<p>The capture duration <em>is usually assigned implicitly</em> (as a consequence of the prevailing <a href="#blrate-assign-the-sample-rate">BL_Rate</a> and <a href="#blsize-assign-the-capture-size-samples">BL_Size</a>). It <em>may also be specified</em> explicitly but if it is, the <a href="#BL_Rate">sample rate</a> and <a href="#BL_Size">trace size</a> may also be modified their values should be rechecked.</p>
+
+<p>The recommended use for this function is to enquire what the prevailing duration is without changing it by specifing <strong>BL_ASK</strong>. Regardless of how BL_Time is called <strong>always check the return value</strong> because <em>it is the value that is actually used</em>.</p>
+
+
+
+<h3 id="bltrace-initiate-capture">BL_Trace - initiate capture</h3>
+
+<p>Initiate data capture on the device:</p>
+
+<pre><code>bool BL_Trace(double ATimeOut, bool ASync); /* C/C++ Prototype */
+function BL_Trace(ATimeOut : Double = BL_TRACE_FORCED; ASync : Boolean = False) : Boolean; { Pascal Prototype }
+</code></pre>
+
+<p>The process of capturing data on BitScope is referred to as a <strong>trace</strong>. Call <strong>BL_Trace</strong> to <em>initiate a trace</em> <strong>after calling the other functions</strong> as required to setup the trace. </p>
+
+<p>BL_Trace is unique because the time it takes to execute can be indeterminate (which depends on the <a href="#bltrigger-set-up-the-trigger">trigger</a>). You must take care to call it correctly, especially if called from your main <a href="#can-i-use-the-library-in-a-multi-threaded-environment">application thread</a>; it <strong>may never return</strong> if <em>called synchronously without a timeout</em>. It <a href="#blhalt-all-any-pending-or-prevailing-device-activity">can be recovered</a> in this case, <em>but only from a different thread</em>.</p>
+
+<p>To avoid complications, <a href="#bltrace-initiate-capture">BL_Trace</a> offers two calling conventions:</p>
+
+<ol>
+<li><strong>asynchronous</strong> with or without a specified timeout</li>
+<li><strong>synchronous</strong> in which case a timeout is recommended.</li>
+</ol>
+
+<p>The first argument (<strong>ATimeOut</strong>, in seconds) specifies the timeout used and the second (<strong>ASync</strong>) specifies the call is to be asynchronous. The <strong>return value</strong> indicates whether BL_Trace commenced successfully (in the asynchronous case) or commenced <em>and completed successfully</em> (in the synchronous case).</p>
+
+<p>The simplest usage is a <strong>synchronous call with a non-zero timeout</strong>. In this case BL_Trace will block the caller and return when:</p>
+
+<ul>
+<li>the trace has successfully completed, or</li>
+<li>a timeout occured while waiting for a trigger, or</li>
+<li>an <a href="#error-recovery">error occured</a> while talking to the device.</li>
+</ul>
+
+<p>If the timeout is short (on a human timescale), this type of usage is compatible with single threaded programming for an interractive program. It is simple because the return value of BL_Trace may be used directly to detemine success (i.e. <a href="#blstate-return-capture-engine-state">BL_State</a> is not required) and all programming is synchronous.</p>
+
+<p>If the timeout required is long or you need to specify infinite timeout (i.e. the trigger timing is unknown), an asynchronous call is recommended (unless you are calling BL_Trace from a <a href="#can-i-use-the-library-in-a-multi-threaded-environment">different thread</a>). In this case BL_Trace will always <em>return to the caller immediately</em> but <strong>the trace may not have completed</strong>. The return value in this case will always be TRUE <em>unless an error occured when talking to the device</em>.</p>
+
+<p>When BL_Trace is called asynchronously <strong>you must poll the trace state</strong> (<a href="#blstate-return-capture-engine-state">BL_State</a>) to determine when the trace has completed; it is a programming error to use any other library function (except <a href="#blhalt-all-any-pending-or-prevailing-device-activity">BL_Halt</a>) before the trace has completed.</p>
+
+<p>Two special values for the timeout are available:</p>
+
+<ul>
+<li><strong>BL_TRACE_FORCED</strong> - commence immediately regardless of the trigger</li>
+<li><strong>BL_TRACE_FOREVER</strong> - commence and wait for the trigger, possibly forever.</li>
+</ul>
+
+<p>Use the former if want a trace and you don’t care about the trigger condition (the trigger condition is <strong>ignored</strong> in this case). Use the latter if you want to wait for <strong>as long as it takes</strong> for a trigger. If the trigger condition is never met, the trace will never complete <a href="#blhalt-all-any-pending-or-prevailing-device-activity">unless manually halted</a>.</p>
+
+
+
+<h3 id="bltrigger-set-up-the-trigger">BL_Trigger - set up the trigger</h3>
+
+<p>Establish the trigger condition to apply to the <a href="#blselect-select-a-device-channel-or-source">selected channel</a>.</p>
+
+<pre><code>bool BL_Trigger(double ALevel, int AEdge); /* C/C++ Prototype */
+function BL_Trigger(ALevel : Double; AEdge : Integer) : Boolean; { Pascal Prototype }
+</code></pre>
+
+<p>If <a href="#bltrace-initiate-capture">BL_Trace</a> is <em>used with a timeout</em> or with <strong>BL_TRACE_FOREVER</strong>, a <em>trigger condition</em> is applied <em>as a predicate to the completion of the <a href="#3-trace-programming-and-capture">trace</a></em>. This means the trace will complete only when the trigger condition is satisfied.</p>
+
+<p>Use <strong>BL_Trigger</strong> to establish a trigger condition on a <a href="#blselect-select-a-device-channel-or-source">selected channel</a>. Call it multiple times, once for each channel, if a combinatorial condition is required to apply to more than one channel.</p>
+
+
+
+<h3 id="blversion-return-the-version">BL_Version - return the version</h3>
+
+<p>Enquire the device, library, bindings and other version information.</p>
+
+<pre><code>char * BL_Version(int ATarget); /* C/C++ Prototype */
+function BL_Version(ATarget : Integer = BL_VERSION_DEVICE) : PAnsiChar; { Pascal Prototype }
+</code></pre>
+
+<p>When using the library is may necessary to know the device, library or other version information. This functions provides access to this information as it applies to the <a href="#blselect-select-a-device-channel-or-source">selected device</a>. There are several version types that may be requested:</p>
+
+<ul>
+<li><strong>BL_VERSION_DEVICE</strong> - device model and version identifier</li>
+<li><strong>BL_VERSION_LIBRARY</strong> - library version and production build ID</li>
+<li><strong>BL_VERSION_BINDING</strong> - language binding and version</li>
+<li><strong>BL_VERSION_PLATFORM</strong> - build platform version</li>
+<li><strong>BL_VERSION_FRAMEWORK</strong> - library framework version</li>
+<li><strong>BL_VERSION_NETWORK</strong> - network communication version</li>
+</ul>
+
+<p>In general you will likely be interested in the first two. The other versions are available to help diagnosis in the event that you discover problems when using a particular instance of the library or its language bindings.</p>
+
+
+
+<h2 id="license">License</h2>
+
+<p>This document may be copied and redistributed under the terms of the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License</a> as published by the Free Software Foundation; either version 1.2, or (at your option) any later version.</p>
+
+
+
+<h2 id="version">Version</h2>
+
+<p>BitScope Library V2.0 Build (FE26B) - User Programming Manual (EC21A)</p>
+
+<p>Copyright (C) <a href="http://bitscope.com/">BitScope Designs</a>, May 26, 2015</p>
+
+<div class="footnotes"><hr><ol><li id="fn:api">In this case an <strong>Application Programming Interface (API)</strong> is this library which includes a detailed specification for a set of callable functions (<a href="http://en.wikipedia.org/wiki/Application_programming_interface">ref</a>) <a href="#fnref:api" title="Return to article" class="reversefootnote">↩</a></li><li id="fn:clang"><strong>C</strong> is a general-purpose programming language. It is one of the most widely used programming languages of all time (<a href="http://en.wikipedia.org/wiki/C_%28programming_language%29">ref</a>) <a href="#fnref:clang" title="Return to article" class="reversefootnote">↩</a></li><li id="fn:cplang"><strong>C++</strong> is a statically typed, free-form, multi-paradigm, compiled, general-purpose programming language. It is regarded as an intermediate-level language, as it comprises both high-level and low-level language features. It is one of the most popular programming languages and is implemented on a wide variety of hardware and operating system platforms (<a href="http://en.wikipedia.org/wiki/C%2B%2B">ref</a>) <a href="#fnref:cplang" title="Return to article" class="reversefootnote">↩</a></li><li id="fn:python"><strong>Python</strong> is a general-purpose, high-level dynamic programming language whose design philosophy emphasizes code readability. It supports multiple programming paradigms, including object-oriented, imperative and functional programming styles (<a href="http://en.wikipedia.org/wiki/Python_%28programming_language%29">ref</a>) <a href="#fnref:python" title="Return to article" class="reversefootnote">↩</a></li><li id="fn:pascal"><strong>Pascal</strong> is an influential imperative and procedural programming language first published in 1970 which has since been extended with object oriented capabilies. It is a small and efficient language intended to encourage good programming practices using structured programming and data structuring (<a href="http://en.wikipedia.org/wiki/Pascal_%28programming_language%29">ref</a>) <a href="#fnref:pascal" title="Return to article" class="reversefootnote">↩</a></li></ol></div>
