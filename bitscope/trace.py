@@ -33,13 +33,12 @@ class Trace:
         else:
             return BL_Time(t)
     
-    def trigger(self, t, kind):
+    def trigger(self, volt, kind):
         if kind in [BL_TRIG_RISE, BL_TRIG_FALL, BL_TRIG_HIGH, BL_TRIG_LOW, BL_TRIG_NONE]:
-            return BL_Trigger(t,kind)
+            return BL_Trigger(volt,kind)
 
-    # def state(self, ):
-
-    # def trace(self, ):
+    def state(self):
+        return BL_State()
 
     def configure(self,rate=BL_MAX_RATE, size=BL_MAX_SIZE, pre_capture=BL_ZERO, post_capture=BL_ZERO):
         #Setup channel-nonspecific parameters for capture.

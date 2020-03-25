@@ -17,7 +17,10 @@ class Device:
         self.name = BL_Name()
         self.version = BL_Version(BL_VERSION_DEVICE)
         # Find number of channels in each device and create Channel object for each and append in devices.channels
-        self.channels = [ Channel(self.id, channel) for channel in range(0,BL_Count(BL_SELECT_CHANNEL))]
+        for channel in range(0,BL_Count(BL_COUNT_ANALOG)):
+            self.channels.append(Channel(self.id, channel))
+        for channel in range(0,BL_Count(BL_COUNT_LOGIC)):
+            self.channels.append(Channel(self.id, channel))
     
     def select(self):
         # check if the required device is selected
@@ -28,7 +31,8 @@ class Device:
     
     def mode(self, mode):
         self.select()
-        # select the mode
-        BL_Mode(mode)
-        self.mode = mode
-        print "Device : {} set to Mode : {}".format(self.id,self.mode)    
+        if mode in [BL_MODE_FAST, BL_MODE_DUAL, BL_MODE_MIXED, BL_MODE_LOGIC, BL_MODE_STREAM]:
+            # select the mode
+            BL_Mode(mode)
+            self.mode = mode
+            print "Device : {} set to Mode : {}".format(self.id,self.mode)    

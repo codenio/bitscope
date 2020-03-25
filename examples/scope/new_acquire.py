@@ -111,7 +111,12 @@ def main(argv=None):
         # BL_Select(BL_SELECT_SOURCE,BL_SOURCE_POD); # use the POD input - the only one available
         # BL_Range(BL_Count(BL_COUNT_RANGE)); # maximum range for y-axis - use this whenever possible
         # BL_Offset(BL_ZERO); # Y-axis offset is set to zero as BL_ZERO
-        scope.devices[0].channels[0].configure(BL_SOURCE_POD,BL_ZERO,BL_Count(BL_COUNT_RANGE),BL_COUPLING_DC)
+        scope.devices[0].channels[0].configure(
+            source=BL_SOURCE_POD,
+            offset=BL_ZERO,
+            analog_range=BL_Count(BL_COUNT_RANGE),
+            coupling=BL_COUPLING_DC
+        )
         #Enable the currently selected channel, i.e. channel A
         #This ensures the recorded data goes into the memory-buffer in Bitscope device
         scope.devices[0].channels[0].enable()

@@ -33,7 +33,41 @@ class Channel:
             BL_Select(BL_SELECT_CHANNEL,self.id)
         
         # print "Selected Device : {} , Channel : {}".format(self.device,self.id)
-
+    
+    def count(self,type):
+        if type in [BL_COUNT_ANALOG,BL_COUNT_LOGIC,BL_COUNT_RANGE]:
+            return BL_Count(type)
+        else:
+            print "Invalid Count Type"
+            return 0
+    
+    def source(self,type=BL_SOURCE_BNC):
+        self.select()
+        
+        if type in [BL_SOURCE_POD, BL_SOURCE_BNC, BL_SOURCE_X10, BL_SOURCE_X20, BL_SOURCE_X50, BL_SOURCE_ALT, BL_SOURCE_GND]:
+            # select the corresponding source for the channel
+            BL_Select(BL_SELECT_SOURCE,type)
+            self.source = type
+    
+    # set offset
+    def offset(self, volt):
+        self.select()
+        # set offset
+        BL_Offset(offset)
+    
+    # set range
+    def analog_range(self,analog_range):
+        self.select()
+        # set range
+        if analog_range >= 0 and analog_range <= (self.analog_range_count)-1:
+            BL_Range(analog_range)
+    
+    # set coupling
+    def coupling(self,coupling):
+        self.select()
+        if coupling in [BL_COUPLING_AC,BL_COUPLING_DC,BL_COUPLING_RF]:
+            BL_Coupling(coupling)
+    
     def configure(self, source=BL_SOURCE_BNC, offset=BL_ZERO,analog_range=0,coupling=BL_COUPLING_DC):
         
         self.select()
@@ -62,6 +96,12 @@ class Channel:
         self.select()   
         BL_Enable(0)
         print "Disabled Device : {} , Channel : {}".format(self.device,self.id)
+
+    # set index before reading the data 
+    # assign the buffer offset (for dumps)
+    def index(self, offset=0):
+        self.select()
+        BL_Index(offset)
 
     # acquire data from channel
     def acquire(self):

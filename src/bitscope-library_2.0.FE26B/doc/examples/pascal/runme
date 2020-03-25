@@ -1,3 +1,0 @@
-#!/bin/sh
-fpc -MObjFPC -Sh -Fu/usr/share/bitscope/units -FU. Report.pas
-
