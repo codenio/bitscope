@@ -114,7 +114,7 @@ def main(argv=None):
         scope.devices[0].channels[0].configure(
             source=BL_SOURCE_POD,
             offset=BL_ZERO,
-            analog_range=BL_Count(BL_COUNT_RANGE),
+            range=BL_Count(BL_COUNT_RANGE),
             coupling=BL_COUPLING_DC
         )
         #Enable the currently selected channel, i.e. channel A

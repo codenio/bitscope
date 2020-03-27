@@ -47,7 +47,7 @@ the example file at `bitscope/examples/scope/scope_plot.py`
 
 ## Library Overview
 
-The Library provides full programmed access to the BitScope Capture Engine. It is implemented using a small set of portable functions. Programming BitScope to capture waveforms and logic is simply a matter of calling the correct sequence of these functions from your program. There are no complicated data structures, parameter lists or callbacks.
+The Library provides full programmed access to the BitScope Capture Engine. It is implemented using a small set of portable functions. Programming BitScope to capture waveforms and logic is simply a matter of calling the correct sequence of these functions from your program.
 
 See BitScope Programming and Library Reference for details.
 
