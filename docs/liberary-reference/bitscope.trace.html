@@ -52,11 +52,16 @@
 
 <dl><dt><a name="Trace-post_capture"><strong>post_capture</strong></a>(self, post_capture<font color="#909090">=0</font>)</dt><dd><tt>sets&nbsp;post_capture&nbsp;time&nbsp;for&nbsp;trace.<br>
 &nbsp;<br>
+Assigned&nbsp;post_capture&nbsp;(seconds)&nbsp;as&nbsp;the&nbsp;post-triger&nbsp;delay.&nbsp;If&nbsp;S&nbsp;is&nbsp;0&nbsp;or&nbsp;omitted,&nbsp;disables&nbsp;delay.<br>
+&nbsp;<br>
 :type&nbsp;post_capture:&nbsp;int<br>
 :param&nbsp;post_capture:&nbsp;time&nbsp;to&nbsp;stop&nbsp;capture&nbsp;after&nbsp;performing&nbsp;the&nbsp;trace<br>
 :return:&nbsp;current&nbsp;post_capture&nbsp;time</tt></dd></dl>
 
 <dl><dt><a name="Trace-pre_capture"><strong>pre_capture</strong></a>(self, pre_capture<font color="#909090">=0</font>)</dt><dd><tt>sets&nbsp;pre_capture&nbsp;time&nbsp;for&nbsp;trace.<br>
+Request&nbsp;pretrigger&nbsp;hold-off&nbsp;duration&nbsp;pre_capture&nbsp;(in&nbsp;seconds)&nbsp;and&nbsp;return&nbsp;duration<br>
+A&nbsp;that&nbsp;will&nbsp;actually&nbsp;be&nbsp;used.&nbsp;They&nbsp;are&nbsp;usually&nbsp;the&nbsp;same&nbsp;but&nbsp;may&nbsp;differ<br>
+depending&nbsp;on&nbsp;the&nbsp;capabilities&nbsp;of&nbsp;the&nbsp;connected&nbsp;device.<br>
 &nbsp;<br>
 :type&nbsp;pre_capture:&nbsp;int<br>
 :param&nbsp;pre_capture:&nbsp;time&nbsp;to&nbsp;start&nbsp;capture&nbsp;before&nbsp;performing&nbsp;the&nbsp;trace<br>
@@ -84,7 +89,7 @@
 :param&nbsp;t:&nbsp;time&nbsp;to&nbsp;trace<br>
 :return:&nbsp;current&nbsp;time</tt></dd></dl>
 
-<dl><dt><a name="Trace-trace"><strong>trace</strong></a>(self, time_out<font color="#909090">=0</font>, sync<font color="#909090">=False</font>)</dt><dd><tt>Commence&nbsp;capture&nbsp;subject&nbsp;to&nbsp;timeout&nbsp;(seconds)&nbsp;and&nbsp;block&nbsp;until&nbsp;the<br>
+<dl><dt><a name="Trace-trace"><strong>trace</strong></a>(self, time_out<font color="#909090">=0</font>, sync<font color="#909090">=False</font>)</dt><dd><tt>Commence&nbsp;capture&nbsp;subject&nbsp;to&nbsp;time_out&nbsp;(seconds)&nbsp;and&nbsp;block&nbsp;until&nbsp;the<br>
 trace&nbsp;completes&nbsp;unless&nbsp;sync&nbsp;is&nbsp;true&nbsp;in&nbsp;which&nbsp;case&nbsp;return&nbsp;now&nbsp;and&nbsp;capture<br>
 asynchronously.&nbsp;In&nbsp;the&nbsp;latter&nbsp;use&nbsp;scope.tracer.<a href="#Trace-state">state</a>()&nbsp;to&nbsp;determine&nbsp;the&nbsp;state&nbsp;of<br>
 capture.&nbsp;Returns&nbsp;OK&nbsp;true&nbsp;if&nbsp;the&nbsp;trace&nbsp;commenced&nbsp;successfully,&nbsp;false<br>
@@ -100,12 +105,21 @@ do&nbsp;it&nbsp;execute&nbsp;aysnchronously.<br>
 :return:&nbsp;boolean</tt></dd></dl>
 
 <dl><dt><a name="Trace-trigger"><strong>trigger</strong></a>(self, volt, kind)</dt><dd><tt>sets&nbsp;tigger&nbsp;for&nbsp;trace.<br>
+Assign&nbsp;volt&nbsp;(volts)&nbsp;as&nbsp;the&nbsp;trigger&nbsp;level&nbsp;on&nbsp;edge&nbsp;kind&nbsp;(0=&gt;rise,&nbsp;1=&gt;fall).<br>
 &nbsp;<br>
 :type&nbsp;volt:&nbsp;double<br>
 :param&nbsp;volt:&nbsp;voltage&nbsp;level&nbsp;for&nbsp;trigger<br>
-:type&nbsp;kind:&nbsp;bitlib.BL_TRIG_RISE,&nbsp;bitlib.BL_TRIG_FALL,&nbsp;bitlib.BL_TRIG_HIGH,&nbsp;bitlib.BL_TRIG_LOW,&nbsp;bitlib.BL_TRIG_NONE<br>
+:type&nbsp;kind:&nbsp;int<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+TRIGGER.RISE&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;during&nbsp;Rise&nbsp;of&nbsp;the&nbsp;trigger<br>
+TRIGGER.FALL&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;during&nbsp;Fall&nbsp;of&nbsp;the&nbsp;trigger<br>
+TRIGGER.HIGH&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;when&nbsp;trigger&nbsp;becomes&nbsp;High<br>
+TRIGGER.LOW&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;when&nbsp;trigger&nbsp;becomes&nbsp;Low<br>
+TRIGGER.NONE&nbsp;-&nbsp;No&nbsp;trigger&nbsp;configured<br>
 :param&nbsp;kind:&nbsp;specify&nbsp;trigger&nbsp;type<br>
-:return:&nbsp;cuurent&nbsp;trigger&nbsp;setting</tt></dd></dl>
+&nbsp;<br>
+:returns:&nbsp;cuurent&nbsp;trigger&nbsp;setting</tt></dd></dl>
 
 </td></tr></table></td></tr></table>
 </body></html>

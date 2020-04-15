@@ -41,38 +41,83 @@
 <td width="100%">Methods defined here:<br>
 <dl><dt><a name="Scope-__del__"><strong>__del__</strong></a>(self)</dt><dd><tt>Destroy&nbsp;the&nbsp;<a href="#Scope">Scope</a>&nbsp;Object.</tt></dd></dl>
 
-<dl><dt><a name="Scope-__init__"><strong>__init__</strong></a>(self, name, count<font color="#909090">=1</font>)</dt><dd><tt>Initialise&nbsp;the&nbsp;<a href="#Scope">Scope</a>&nbsp;Object.<br>
+<dl><dt><a name="Scope-__init__"><strong>__init__</strong></a>(self, probe_files<font color="#909090">=None</font>, count<font color="#909090">=1</font>)</dt><dd><tt>Initialise&nbsp;the&nbsp;<a href="#Scope">Scope</a>&nbsp;Object.<br>
 &nbsp;<br>
-:type&nbsp;name:&nbsp;string<br>
-:param&nbsp;name:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
+Open&nbsp;devices&nbsp;listed&nbsp;in&nbsp;probe&nbsp;file&nbsp;probe_files&nbsp;(string)&nbsp;or&nbsp;a&nbsp;literal&nbsp;list&nbsp;of&nbsp;links,<br>
+also&nbsp;specified&nbsp;via&nbsp;probe_files&nbsp;(individual&nbsp;links&nbsp;are&nbsp;separated&nbsp;by&nbsp;newlines).&nbsp;If<br>
+not&nbsp;specified,&nbsp;the&nbsp;standard&nbsp;probe&nbsp;file&nbsp;is&nbsp;used.&nbsp;Opens&nbsp;the&nbsp;first&nbsp;valid<br>
+link&nbsp;found&nbsp;unless&nbsp;count&nbsp;is&nbsp;specified&nbsp;in&nbsp;which&nbsp;case&nbsp;count&nbsp;links&nbsp;are&nbsp;attempted&nbsp;and<br>
+valid&nbsp;links&nbsp;are&nbsp;opened.&nbsp;Returns&nbsp;number&nbsp;of&nbsp;successfully&nbsp;opened&nbsp;links.<br>
+&nbsp;<br>
+Initializes&nbsp;Device&nbsp;Objects&nbsp;for&nbsp;each&nbsp;opened&nbsp;device<br>
+Initializes&nbsp;Channel&nbsp;Objects&nbsp;for&nbsp;each&nbsp;channel&nbsp;available&nbsp;in&nbsp;the&nbsp;device.<br>
+&nbsp;<br>
+:type&nbsp;probe_files:&nbsp;string<br>
+:param&nbsp;probe_files:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
 :type&nbsp;count:&nbsp;int<br>
-:param&nbsp;count:&nbsp;number&nbsp;of&nbsp;devices&nbsp;to&nbsp;be&nbsp;opened.&nbsp;default&nbsp;1</tt></dd></dl>
+:param&nbsp;count:&nbsp;number&nbsp;of&nbsp;devices&nbsp;to&nbsp;be&nbsp;opened.&nbsp;default&nbsp;1<br>
+&nbsp;<br>
+:returns:&nbsp;instance&nbsp;of&nbsp;the&nbsp;class&nbsp;<a href="#Scope">Scope</a></tt></dd></dl>
 
 <dl><dt><a name="Scope-close"><strong>close</strong></a>(self)</dt><dd><tt>Close&nbsp;all&nbsp;opened&nbsp;devices.&nbsp;Call&nbsp;this&nbsp;to&nbsp;release&nbsp;library&nbsp;resources&nbsp;and/or<br>
 before&nbsp;opening&nbsp;(scope.<a href="#Scope-open">open</a>())&nbsp;a&nbsp;new&nbsp;set&nbsp;of&nbsp;devices.</tt></dd></dl>
+
+<dl><dt><a name="Scope-count"><strong>count</strong></a>(self, type<font color="#909090">=0</font>)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;prevailing&nbsp;device&nbsp;available.<br>
+&nbsp;<br>
+:type&nbsp;type:&nbsp;int<br>
+Available&nbsp;Options&nbsp;are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;COUNT.DEVICE&nbsp;-&nbsp;successfully&nbsp;opened&nbsp;devices<br>
+&nbsp;<br>
+:param&nbsp;type:&nbsp;specifies&nbsp;the&nbsp;type&nbsp;for&nbsp;which&nbsp;count&nbsp;must&nbsp;be&nbsp;found<br>
+&nbsp;<br>
+:return:&nbsp;count&nbsp;of&nbsp;the&nbsp;selected&nbsp;type</tt></dd></dl>
 
 <dl><dt><a name="Scope-halt"><strong>halt</strong></a>(self)</dt><dd><tt>Halt&nbsp;any&nbsp;prevailing&nbsp;streaming&nbsp;on&nbsp;the&nbsp;selected&nbsp;device.<br>
 &nbsp;<br>
 :returns:&nbsp;OK</tt></dd></dl>
 
-<dl><dt><a name="Scope-initialise"><strong>initialise</strong></a>(self)</dt><dd><tt>Initialises&nbsp;BitLib&nbsp;library.</tt></dd></dl>
-
-<dl><dt><a name="Scope-open"><strong>open</strong></a>(self, name, count<font color="#909090">=1</font>)</dt><dd><tt>Opens&nbsp;Specified&nbsp;Number&nbsp;of&nbsp;Devices<br>
+<dl><dt><a name="Scope-initialise"><strong>initialise</strong></a>(self)</dt><dd><tt>Initialises&nbsp;BitLib&nbsp;library.<br>
 &nbsp;<br>
-:type&nbsp;name:&nbsp;string<br>
-:param&nbsp;name:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
+Call&nbsp;to&nbsp;initialize&nbsp;the&nbsp;library.&nbsp;Optional&nbsp;unless&nbsp;dynamically&nbsp;loaded.</tt></dd></dl>
+
+<dl><dt><a name="Scope-open"><strong>open</strong></a>(self, probe_files<font color="#909090">=None</font>, count<font color="#909090">=1</font>)</dt><dd><tt>Opens&nbsp;Specified&nbsp;Number&nbsp;of&nbsp;Devices<br>
+&nbsp;<br>
+Open&nbsp;devices&nbsp;listed&nbsp;in&nbsp;probe&nbsp;file&nbsp;probe_files&nbsp;(string)&nbsp;or&nbsp;a&nbsp;literal&nbsp;list&nbsp;of&nbsp;links,<br>
+also&nbsp;specified&nbsp;via&nbsp;probe_files&nbsp;(individual&nbsp;links&nbsp;are&nbsp;separated&nbsp;by&nbsp;newlines).&nbsp;If<br>
+not&nbsp;specified,&nbsp;the&nbsp;standard&nbsp;probe&nbsp;file&nbsp;is&nbsp;used.&nbsp;Opens&nbsp;the&nbsp;first&nbsp;valid<br>
+link&nbsp;found&nbsp;unless&nbsp;count&nbsp;is&nbsp;specified&nbsp;in&nbsp;which&nbsp;case&nbsp;count&nbsp;links&nbsp;are&nbsp;attempted&nbsp;and<br>
+valid&nbsp;links&nbsp;are&nbsp;opened.&nbsp;Returns&nbsp;number&nbsp;of&nbsp;successfully&nbsp;opened&nbsp;links.<br>
+&nbsp;<br>
+:type&nbsp;probe_files:&nbsp;string&nbsp;or&nbsp;list&nbsp;of&nbsp;links<br>
+:param&nbsp;probe_files:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
 :type&nbsp;count:&nbsp;int<br>
 :param&nbsp;count:&nbsp;number&nbsp;of&nbsp;devices&nbsp;to&nbsp;be&nbsp;opened.&nbsp;default&nbsp;1<br>
 :returns:&nbsp;int&nbsp;opened&nbsp;device&nbsp;count</tt></dd></dl>
 
+<dl><dt><a name="Scope-send"><strong>send</strong></a>(self, command, layer)</dt><dd><tt>Send&nbsp;the&nbsp;command&nbsp;string&nbsp;S&nbsp;to&nbsp;the&nbsp;selected&nbsp;device&nbsp;on&nbsp;layer&nbsp;L&nbsp;(0=&gt;scope,<br>
+1=&gt;generator).&nbsp;This&nbsp;function&nbsp;can&nbsp;be&nbsp;used&nbsp;with&nbsp;BL_Receive&nbsp;to&nbsp;send&nbsp;and<br>
+receive&nbsp;command&nbsp;strings&nbsp;to&nbsp;a&nbsp;device&nbsp;effectively&nbsp;bypassing&nbsp;the&nbsp;library.<br>
+&nbsp;<br>
+:type&nbsp;command:&nbsp;string<br>
+:param&nbsp;command:&nbsp;command&nbsp;to&nbsp;be&nbsp;sent&nbsp;to&nbsp;the&nbsp;signal&nbsp;scope&nbsp;or&nbsp;generator<br>
+:type&nbsp;layer:&nbsp;int<br>
+available&nbsp;options&nbsp;are<br>
+LAYER.SCOPE&nbsp;-&nbsp;to&nbsp;send&nbsp;command&nbsp;to&nbsp;scope<br>
+LAYER.GENERATOR&nbsp;-&nbsp;to&nbsp;send&nbsp;command&nbsp;to&nbsp;generator<br>
+:param&nbsp;layer:&nbsp;selects&nbsp;the&nbsp;layer&nbsp;to&nbsp;which&nbsp;command&nbsp;is&nbsp;to&nbsp;be&nbsp;sent<br>
+&nbsp;<br>
+:returns:&nbsp;the&nbsp;same&nbsp;command&nbsp;sent</tt></dd></dl>
+
 <dl><dt><a name="Scope-version"><strong>version</strong></a>(self, type<font color="#909090">=1</font>)</dt><dd><tt>Retruns&nbsp;version&nbsp;string&nbsp;of&nbsp;the&nbsp;selected&nbsp;type.&nbsp;<br>
-scope.<a href="#Scope-version">version</a>(type)&nbsp;-&gt;&nbsp;V<br>
-scope.<a href="#Scope-version">version</a>(type=0)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;the&nbsp;selected&nbsp;device.<br>
-scope.<a href="#Scope-version">version</a>(type=1)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;library.<br>
-scope.<a href="#Scope-version">version</a>(type=2)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;python&nbsp;binding.<br>
 &nbsp;<br>
 :type&nbsp;type:&nbsp;int<br>
 :param&nbsp;type:&nbsp;Version&nbsp;type&nbsp;to&nbsp;display<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+VERSION.DEVICE&nbsp;-&nbsp;device&nbsp;model&nbsp;and&nbsp;version&nbsp;identifier<br>
+VERSION.LIBRARY&nbsp;-&nbsp;library&nbsp;version&nbsp;and&nbsp;production&nbsp;build&nbsp;ID<br>
+VERSION.BINDING&nbsp;-&nbsp;language&nbsp;binding&nbsp;and&nbsp;version<br>
+&nbsp;<br>
 :returns:&nbsp;version&nbsp;string</tt></dd></dl>
 
 <hr>

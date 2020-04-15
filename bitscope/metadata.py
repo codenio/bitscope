@@ -1,3 +1,4 @@
+__name__='bitscope'
 __version__='0.0.2'
 __status__ = "Developement"
 __license__ = "GPL"

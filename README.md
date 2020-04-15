@@ -2,7 +2,7 @@
 
 # bitscope
 
-**bitscope** is a comprehensive library for programming and data collection from Bitscope Micro.
+**bitscope** is a comprehensive library for programming and data collection from [Bitscope Micro](http://bitscope.com/product/BS05/).
 
 <p align="center">
   <img src="images/bitscope.png", href="http://bitscope.com/product/BS05/">
@@ -118,15 +118,18 @@ print Data
     $ sudo pip install bitscope
     ```
 - connect your bitscope to your pc and test the functionality using
-the example file at `bitscope/examples/scope/scope_plot.py`
+the example file at `examples/basics/bitscope-read-data.py`
     ```bash
-    $ python ./examples/scope/scope_plot.py
+    $ python examples/basics/bitscope-read-data.py
     ```
 
 ## Documentation
 
 - [Library Overview](docs/liberary-overview/README.md)
 - [Library Reference](https://htmlpreview.github.io/?https://github.com/codenio/bitscope/blob/master/docs/liberary-reference/bitscope.html)
+- [Examples](examples)
+    - [Basics](examples/basics)
+    - [Matplotlib](examples/matplotlib)
 
 ## Develope
 

@@ -10,7 +10,34 @@
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>bitscope</strong></big></big> (version 0.0.2)</font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aananth/workspace/github/bitscope/bitscope/__init__.py">/home/aananth/workspace/github/bitscope/bitscope/__init__.py</a></font></td></tr></table>
-    <p><tt>This&nbsp;is&nbsp;an&nbsp;object-oriented&nbsp;bitlib&nbsp;library.<br>
+    <p><tt>Bitscope&nbsp;Wrapper&nbsp;Library&nbsp;0.2&nbsp;<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;an&nbsp;object-oriented&nbsp;wrapper&nbsp;for&nbsp;BitScope&nbsp;Library&nbsp;API&nbsp;2.0.<br>
+which&nbsp;is&nbsp;a&nbsp;programming&nbsp;library&nbsp;for&nbsp;all&nbsp;current&nbsp;model&nbsp;BitScopes.<br>
+&nbsp;<br>
+It&nbsp;abstracts&nbsp;the&nbsp;BitScope&nbsp;Virtual&nbsp;Machine&nbsp;into&nbsp;a&nbsp;functional&nbsp;API&nbsp;that<br>
+supports&nbsp;connecting&nbsp;to&nbsp;BitScope,&nbsp;setting&nbsp;up&nbsp;trigger&nbsp;conditions,<br>
+performing&nbsp;a&nbsp;waveform&nbsp;capture&nbsp;and&nbsp;acquiring&nbsp;captured&nbsp;data&nbsp;as&nbsp;well&nbsp;as<br>
+more&nbsp;specialized&nbsp;functions&nbsp;such&nbsp;as&nbsp;generating&nbsp;signals&nbsp;and&nbsp;capturing<br>
+continuous&nbsp;waveforms.<br>
+&nbsp;<br>
+BitScopes&nbsp;capture&nbsp;signals&nbsp;in&nbsp;various&nbsp;modes&nbsp;(see&nbsp;scope.mode())&nbsp;but&nbsp;all&nbsp;modes<br>
+are&nbsp;programmed&nbsp;in&nbsp;a&nbsp;similar&nbsp;multi-phase&nbsp;manner:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Open&nbsp;-&gt;&nbsp;Setup&nbsp;-&gt;&nbsp;<a href="#Trace">Trace</a>&nbsp;-&gt;&nbsp;Acquire&nbsp;-&gt;&nbsp;Close<br>
+&nbsp;<br>
+Initialise&nbsp;using&nbsp;scope.open()&nbsp;or&nbsp;Scope()&nbsp;class&nbsp;(scope.initialize()&nbsp;is&nbsp;optional).<br>
+&nbsp;<br>
+Setup&nbsp;is&nbsp;the&nbsp;most&nbsp;detailed&nbsp;phase&nbsp;and&nbsp;uses&nbsp;a&nbsp;selection&nbsp;of&nbsp;scope.devices[].select()<br>
+or&nbsp;scope.devices[].channels[].select().<br>
+&nbsp;<br>
+BL_Mode,&nbsp;BL_Offset,&nbsp;BL_Enable,&nbsp;BL_Rate,<br>
+BL_Time,&nbsp;BL_Size&nbsp;BL_Intro&nbsp;and&nbsp;BL_Trigger.<br>
+&nbsp;<br>
+<a href="#Trace">Trace</a>&nbsp;performs&nbsp;the&nbsp;actual&nbsp;data&nbsp;capture&nbsp;via&nbsp;scope.tracer.trace().<br>
+&nbsp;<br>
+Acquire&nbsp;reads&nbsp;the&nbsp;captured&nbsp;data&nbsp;from&nbsp;the&nbsp;device&nbsp;channel&nbsp;by&nbsp;channel&nbsp;and<br>
+uses&nbsp;scope.devices[].channels[].acquire().<br>
 &nbsp;<br>
 which&nbsp;may&nbsp;be&nbsp;imported&nbsp;directly,&nbsp;e.g.::<br>
 &nbsp;<br>
@@ -32,7 +59,7 @@ Modules&nbsp;include:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;defines&nbsp;the&nbsp;:class:`~bitscope.channel.Channel`&nbsp;class.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:mod:`bitscope.trace`<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;defines&nbsp;the&nbsp;:class:`~bitscope.trace.Trace`&nbsp;class.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;defines&nbsp;the&nbsp;:class:`~bitscope.trace.<a href="#Trace">Trace</a>`&nbsp;class.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:mod:`bitscope.metadata`</tt></p>
 <p>
@@ -49,12 +76,305 @@ Modules&nbsp;include:<br>
 </td><td width="25%" valign=top><a href="bitscope.trace.html">trace</a><br>
 </td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="bitscope.html#Count">Count</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Coupling">Coupling</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Layer">Layer</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Max">Max</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Mode">Mode</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Select">Select</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Source">Source</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#State">State</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Trace">Trace</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Trigger">Trigger</a>
+</font></dt><dt><font face="helvetica, arial"><a href="bitscope.html#Version">Version</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Count">class <strong>Count</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Count">Count</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+COUNT.DEVICE&nbsp;-&nbsp;successfully&nbsp;opened&nbsp;devices<br>
+COUNT.ANALOG&nbsp;-&nbsp;analog&nbsp;channels&nbsp;on&nbsp;the&nbsp;selected&nbsp;device<br>
+COUNT.LOGIC&nbsp;-&nbsp;logic&nbsp;channels&nbsp;on&nbsp;the&nbsp;selected&nbsp;device<br>
+COUNT.RANGE&nbsp;-&nbsp;number&nbsp;of&nbsp;analog&nbsp;ranges&nbsp;on&nbsp;the&nbsp;selected&nbsp;channel<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>ANALOG</strong> = 1</dl>
+
+<dl><dt><strong>DEVICE</strong> = 0</dl>
+
+<dl><dt><strong>LOGIC</strong> = 2</dl>
+
+<dl><dt><strong>RANGE</strong> = 3</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Coupling">class <strong>Coupling</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Coupling">Coupling</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+COUPLING.DC&nbsp;-&nbsp;direct&nbsp;connection&nbsp;for&nbsp;DC&nbsp;signals&nbsp;(the&nbsp;default)<br>
+COUPLING.AC&nbsp;-&nbsp;AC&nbsp;connection&nbsp;(eliminates&nbsp;DC&nbsp;bias)<br>
+COUPLING.RF&nbsp;-&nbsp;RF&nbsp;connection&nbsp;for&nbsp;very&nbsp;high&nbsp;frequencies<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>AC</strong> = 1</dl>
+
+<dl><dt><strong>DC</strong> = 0</dl>
+
+<dl><dt><strong>RF</strong> = 2</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Layer">class <strong>Layer</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Layer">Layer</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+LAYER.SCOPE&nbsp;-&nbsp;to&nbsp;select&nbsp;the&nbsp;layer&nbsp;as&nbsp;SCOPE<br>
+LAYER.GENERATOR&nbsp;-&nbsp;to&nbsp;select&nbsp;the&nbsp;layer&nbsp;as&nbsp;GENERATOR<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>GENERATOR</strong> = 1</dl>
+
+<dl><dt><strong>SCOPE</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Max">class <strong>Max</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+MAX.RATE&nbsp;-&nbsp;specify&nbsp;to&nbsp;choose&nbsp;the&nbsp;highest&nbsp;sample&nbsp;rate&nbsp;supported&nbsp;by&nbsp;the&nbsp;selected&nbsp;device&nbsp;in&nbsp;the&nbsp;current&nbsp;mode.<br>
+MAX.SIZE&nbsp;-&nbsp;specify&nbsp;to&nbsp;choose&nbsp;the&nbsp;largest&nbsp;size&nbsp;supported&nbsp;by&nbsp;the&nbsp;selected&nbsp;device&nbsp;in&nbsp;the&nbsp;current&nbsp;mode.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>RATE</strong> = 0</dl>
+
+<dl><dt><strong>SIZE</strong> = 0</dl>
+
+<dl><dt><strong>TIME</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Mode">class <strong>Mode</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Mode">Mode</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+MODE.FAST&nbsp;-&nbsp;analog&nbsp;capture&nbsp;at&nbsp;the&nbsp;fastest&nbsp;rates&nbsp;available<br>
+MODE.DUAL&nbsp;-&nbsp;dual&nbsp;channel&nbsp;sample&nbsp;synchronous&nbsp;analog&nbsp;capture<br>
+MODE.MIXED&nbsp;-&nbsp;mixed&nbsp;analog&nbsp;+&nbsp;logic&nbsp;signal&nbsp;capture<br>
+MODE.LOGIC&nbsp;-&nbsp;logic&nbsp;only&nbsp;capture&nbsp;mode<br>
+MODE.STREAM&nbsp;-&nbsp;streaming&nbsp;mixed&nbsp;signal&nbsp;capture<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>DUAL</strong> = 1</dl>
+
+<dl><dt><strong>FAST</strong> = 0</dl>
+
+<dl><dt><strong>LOGIC</strong> = 3</dl>
+
+<dl><dt><strong>MIXED</strong> = 2</dl>
+
+<dl><dt><strong>STREAM</strong> = 4</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Select">class <strong>Select</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+SELECT.DEVICE&nbsp;-&nbsp;select&nbsp;a&nbsp;device<br>
+SELECT.CHANNEL&nbsp;-&nbsp;select&nbsp;a&nbsp;channel&nbsp;on&nbsp;the&nbsp;(previously)&nbsp;selected&nbsp;device<br>
+SELECT.SOURCE&nbsp;-&nbsp;select&nbsp;an&nbsp;input&nbsp;source&nbsp;of&nbsp;the&nbsp;selected&nbsp;channel<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>CHANNEL</strong> = 1</dl>
+
+<dl><dt><strong>DEVICE</strong> = 0</dl>
+
+<dl><dt><strong>SOURCE</strong> = 2</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Source">class <strong>Source</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Source">Source</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+SOURCE.POD&nbsp;-&nbsp;analog&nbsp;or&nbsp;logic&nbsp;channel&nbsp;POD&nbsp;input<br>
+SOURCE.BNC&nbsp;-&nbsp;analog&nbsp;channel&nbsp;BNC&nbsp;input&nbsp;(if&nbsp;available)<br>
+SOURCE.X10&nbsp;-&nbsp;analog&nbsp;input&nbsp;prescaled&nbsp;by&nbsp;10<br>
+SOURCE.X20&nbsp;-&nbsp;analog&nbsp;input&nbsp;prescaled&nbsp;by&nbsp;20<br>
+SOURCE.X50&nbsp;-&nbsp;analog&nbsp;input&nbsp;prescaled&nbsp;by&nbsp;50<br>
+SOURCE.ALT&nbsp;-&nbsp;alternate&nbsp;input&nbsp;(data&nbsp;acquisition)<br>
+SOURCE.GND&nbsp;-&nbsp;ground&nbsp;reference&nbsp;input<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>ALT</strong> = 5</dl>
+
+<dl><dt><strong>BNC</strong> = 1</dl>
+
+<dl><dt><strong>GND</strong> = 6</dl>
+
+<dl><dt><strong>POD</strong> = 0</dl>
+
+<dl><dt><strong>X10</strong> = 2</dl>
+
+<dl><dt><strong>X20</strong> = 3</dl>
+
+<dl><dt><strong>X50</strong> = 4</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="State">class <strong>State</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+STATE.IDLE&nbsp;-&nbsp;idle&nbsp;and&nbsp;ready&nbsp;to&nbsp;program<br>
+STATE.ACTIVE&nbsp;-&nbsp;actively&nbsp;capturing&nbsp;data<br>
+STATE.DONE&nbsp;-&nbsp;completed&nbsp;capturing&nbsp;data&nbsp;successfully<br>
+STATE.ERROR&nbsp;-&nbsp;completed&nbsp;capturing&nbsp;data&nbsp;unsuccessfully<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>ACTIVE</strong> = 1</dl>
+
+<dl><dt><strong>DONE</strong> = 2</dl>
+
+<dl><dt><strong>ERROR</strong> = 3</dl>
+
+<dl><dt><strong>IDLE</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Trace">class <strong>Trace</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+TRACE.FORCED&nbsp;-&nbsp;commence&nbsp;immediately&nbsp;regardless&nbsp;of&nbsp;the&nbsp;trigger<br>
+TRACE.FOREVER&nbsp;-&nbsp;commence&nbsp;and&nbsp;wait&nbsp;for&nbsp;the&nbsp;trigger,&nbsp;possibly&nbsp;forever.<br>
+TRACE.SYNCHRONOUS&nbsp;-&nbsp;to&nbsp;start&nbsp;the&nbsp;trace&nbsp;synchronously<br>
+TRACE.ASYNCHRONOUS&nbsp;-&nbsp;to&nbsp;start&nbsp;the&nbsp;trace&nbsp;asynchronously<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>ASYNCHRONOUS</strong> = 1</dl>
+
+<dl><dt><strong>FORCED</strong> = 0</dl>
+
+<dl><dt><strong>FOREVER</strong> = -1</dl>
+
+<dl><dt><strong>SYNCHRONOUS</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Trigger">class <strong>Trigger</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+TRIGGER.RISE&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;during&nbsp;Rise&nbsp;of&nbsp;the&nbsp;trigger<br>
+TRIGGER.FALL&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;during&nbsp;Fall&nbsp;of&nbsp;the&nbsp;trigger<br>
+TRIGGER.HIGH&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;when&nbsp;trigger&nbsp;becomes&nbsp;High<br>
+TRIGGER.LOW&nbsp;-&nbsp;To&nbsp;start&nbsp;capture&nbsp;when&nbsp;trigger&nbsp;becomes&nbsp;Low<br>
+TRIGGER.NONE&nbsp;-&nbsp;No&nbsp;trigger&nbsp;configured<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>FALL</strong> = 1</dl>
+
+<dl><dt><strong>HIGH</strong> = 2</dl>
+
+<dl><dt><strong>LOW</strong> = 3</dl>
+
+<dl><dt><strong>NONE</strong> = 4</dl>
+
+<dl><dt><strong>RISE</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Version">class <strong>Version</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Max">Max</a>&nbsp;Class&nbsp;for&nbsp;Holding&nbsp;Constants.<br>
+Available&nbsp;Options&nbsp;can&nbsp;be&nbsp;accessed&nbsp;as<br>
+&nbsp;<br>
+VERSION.DEVICE&nbsp;-&nbsp;device&nbsp;model&nbsp;and&nbsp;version&nbsp;identifier<br>
+VERSION.LIBRARY&nbsp;-&nbsp;library&nbsp;version&nbsp;and&nbsp;production&nbsp;build&nbsp;ID<br>
+VERSION.BINDING&nbsp;-&nbsp;language&nbsp;binding&nbsp;and&nbsp;version<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Data and other attributes defined here:<br>
+<dl><dt><strong>BINDING</strong> = 2</dl>
+
+<dl><dt><strong>DEVICE</strong> = 0</dl>
+
+<dl><dt><strong>LIBRARY</strong> = 1</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
 <td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>__license__</strong> = 'GPL'<br>
+<td width="100%"><strong>ASK</strong> = -1<br>
+<strong>COUNT</strong> = &lt;bitscope.Count instance&gt;<br>
+<strong>COUPLING</strong> = &lt;bitscope.Coupling instance&gt;<br>
+<strong>LAYER</strong> = &lt;bitscope.Layer instance&gt;<br>
+<strong>MAX</strong> = &lt;bitscope.Max instance&gt;<br>
+<strong>MODE</strong> = &lt;bitscope.Mode instance&gt;<br>
+<strong>SELECT</strong> = &lt;bitscope.Select instance&gt;<br>
+<strong>SOURCE</strong> = &lt;bitscope.Source instance&gt;<br>
+<strong>STATE</strong> = &lt;bitscope.State instance&gt;<br>
+<strong>TRACE</strong> = &lt;bitscope.Trace instance&gt;<br>
+<strong>TRIGGER</strong> = &lt;bitscope.Trigger instance&gt;<br>
+<strong>VERSION</strong> = &lt;bitscope.Version instance&gt;<br>
+<strong>ZERO</strong> = 0<br>
+<strong>__license__</strong> = 'GPL'<br>
 <strong>__status__</strong> = 'Developement'<br>
 <strong>__version__</strong> = '0.0.2'</td></tr></table>
 </body></html>

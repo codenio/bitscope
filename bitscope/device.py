@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from bitlib import *
+import bitlib
 from bitscope.channel import Channel
 
 class Device:
@@ -16,16 +16,19 @@ class Device:
 
         :type device: int
         :param device: device id to be initialised
+        
+        :returns: instance of the class Device
         """
         self.id = device
-        BL_Select(BL_SELECT_DEVICE,device)
-        self.name = BL_Name()
-        self.version = BL_Version(BL_VERSION_DEVICE)
+        bitlib.BL_Select(bitlib.BL_SELECT_DEVICE,device)
+        self.name = bitlib.BL_Name()
+        self.device_id = bitlib.BL_ID()
+        self.version = bitlib.BL_Version(bitlib.BL_VERSION_DEVICE)
         # Find number of channels in each device and create Channel object for each and append in devices.channels
         self.channels = []
-        for channel in range(0,BL_Count(BL_COUNT_ANALOG)):
+        for channel in range(0,bitlib.BL_Count(bitlib.BL_COUNT_ANALOG)):
             self.channels.append(Channel(self.id, channel))
-        for channel in range(0,BL_Count(BL_COUNT_LOGIC)):
+        for channel in range(0,bitlib.BL_Count(bitlib.BL_COUNT_LOGIC)):
             self.channels.append(Channel(self.id, channel))
     
     def select(self):
@@ -34,22 +37,33 @@ class Device:
         :return: current selection is returned.
         """
         # check if the required device is selected
-        if self.id != BL_Select(BL_SELECT_DEVICE,BL_ASK):
+        if self.id != bitlib.BL_Select(bitlib.BL_SELECT_DEVICE,bitlib.BL_ASK):
             # select the corresponding device first
-            return BL_Select(BL_SELECT_DEVICE,self.id)
-        # print "Selected Device : {}".format(self.id)
+            self.id = bitlib.BL_Select(bitlib.BL_SELECT_DEVICE,self.id)
+        
+        return self.id
     
     def mode(self, mode):
         """Assign mode to the selected device and return the mode if
         successful.
 
         :type mode: int
-        :param mode: Assign mode (BL_MODE_FAST=>SCOPE, BL_MODE_DUAL=>CHOP, BL_MODE_MIXED=>MIXED, BL_MODE_LOGIC=>LOGIC, BL_MODE_STREAM=>STREAM) to the selected device
+        :param mode: Assign mode. 
+        Available Options can be accessed as
+        
+        MODE.FAST - analog capture at the fastest rates available
+        MODE.DUAL - dual channel sample synchronous analog capture
+        MODE.MIXED - mixed analog + logic signal capture
+        MODE.LOGIC - logic only capture mode
+        MODE.STREAM - streaming mixed signal capture
+        
         :return: return the mode if successful
         """
         self.select()
-        if mode in [BL_MODE_FAST, BL_MODE_DUAL, BL_MODE_MIXED, BL_MODE_LOGIC, BL_MODE_STREAM]:
+        if mode in [bitlib.BL_MODE_FAST, bitlib.BL_MODE_DUAL, bitlib.BL_MODE_MIXED, bitlib.BL_MODE_LOGIC, bitlib.BL_MODE_STREAM]:
             # select the mode
-            BL_Mode(mode)
+            bitlib.BL_Mode(mode)
             self.mode = mode
             print "Device : {} set to Mode : {}".format(self.id,self.mode)
+        
+        return self.mode
