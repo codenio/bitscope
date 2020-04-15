@@ -1,0 +1,141 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module bitscope.channel</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="bitscope.html"><font color="#ffffff">bitscope</font></a>.channel</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aananth/workspace/github/bitscope/bitscope/channel.py">/home/aananth/workspace/github/bitscope/bitscope/channel.py</a></font></td></tr></table>
+    <p><tt>Document&nbsp;level&nbsp;docstring.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="bitlib.html">bitlib</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="bitscope.channel.html#Channel">Channel</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Channel">class <strong>Channel</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>channel&nbsp;class&nbsp;to&nbsp;select,&nbsp;configure&nbsp;and&nbsp;acquire&nbsp;data&nbsp;from&nbsp;channels.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Channel-__init__"><strong>__init__</strong></a>(self, device, channel)</dt><dd><tt>Initialise&nbsp;channel&nbsp;objects.<br>
+&nbsp;<br>
+:type&nbsp;device:&nbsp;int<br>
+:param&nbsp;device:&nbsp;device&nbsp;id<br>
+:type&nbsp;channel:&nbsp;int<br>
+:param&nbsp;channel:&nbsp;channel&nbsp;id</tt></dd></dl>
+
+<dl><dt><a name="Channel-acquire"><strong>acquire</strong></a>(self)</dt><dd><tt>Reads&nbsp;N&nbsp;samples&nbsp;from&nbsp;the&nbsp;selected&nbsp;device&nbsp;(bitlib.BL_Select)&nbsp;and&nbsp;channel&nbsp;and<br>
+writes&nbsp;them&nbsp;to&nbsp;list&nbsp;D.<br>
+Returns&nbsp;N&nbsp;samples&nbsp;(possibly&nbsp;updated&nbsp;value).&nbsp;Samples&nbsp;are<br>
+(nominally)&nbsp;floating&nbsp;point&nbsp;voltages.&nbsp;Logic&nbsp;channels&nbsp;are<br>
+(nominally)&nbsp;low&nbsp;(0V)&nbsp;or&nbsp;high&nbsp;(5V).&nbsp;Alternatively&nbsp;D&nbsp;and/or&nbsp;N&nbsp;may<br>
+be&nbsp;omitted.&nbsp;In&nbsp;either&nbsp;case&nbsp;the&nbsp;returned&nbsp;value&nbsp;is&nbsp;a&nbsp;new&nbsp;list&nbsp;of<br>
+size&nbsp;N&nbsp;(or&nbsp;bitlib.BL_Size()&nbsp;if&nbsp;N&nbsp;is&nbsp;omitted).</tt></dd></dl>
+
+<dl><dt><a name="Channel-analog_range"><strong>analog_range</strong></a>(self, range)</dt><dd><tt>Selects&nbsp;range&nbsp;and&nbsp;returns&nbsp;the&nbsp;maximum&nbsp;peak-to-peak&nbsp;voltage&nbsp;the&nbsp;can<br>
+be&nbsp;captured&nbsp;on&nbsp;the&nbsp;selected&nbsp;device,&nbsp;channel&nbsp;and&nbsp;source.&nbsp;If&nbsp;the&nbsp;range&nbsp;is<br>
+omitted,&nbsp;the&nbsp;prevailing&nbsp;range&nbsp;scale&nbsp;is&nbsp;returned.&nbsp;The&nbsp;range&nbsp;must<br>
+otherwise&nbsp;be&nbsp;0&nbsp;to&nbsp;N&nbsp;where&nbsp;N&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;available&nbsp;ranges).<br>
+&nbsp;<br>
+:type&nbsp;range:&nbsp;int<br>
+:param&nbsp;range:&nbsp;maximum&nbsp;peak-to-peak&nbsp;voltage&nbsp;the&nbsp;can&nbsp;be&nbsp;captured&nbsp;on&nbsp;the&nbsp;selected&nbsp;device,&nbsp;channel&nbsp;and&nbsp;source.<br>
+:return:&nbsp;returns&nbsp;the&nbsp;maximum&nbsp;peak-to-peak&nbsp;voltage</tt></dd></dl>
+
+<dl><dt><a name="Channel-configure"><strong>configure</strong></a>(self, source<font color="#909090">=1</font>, offset<font color="#909090">=0</font>, range<font color="#909090">=0</font>, coupling<font color="#909090">=0</font>)</dt><dd><tt>Configure&nbsp;the&nbsp;channel&nbsp;parameters&nbsp;like&nbsp;source,&nbsp;offset,&nbsp;analog_range,<br>
+coupling&nbsp;for&nbsp;the&nbsp;selected&nbsp;device&nbsp;and&nbsp;channel.<br>
+&nbsp;<br>
+:type&nbsp;source:&nbsp;bitlib.BL_SOURCE_POD,&nbsp;bitlib.BL_SOURCE_BNC,&nbsp;bitlib.BL_SOURCE_X10,&nbsp;bitlib.BL_SOURCE_X20,&nbsp;bitlib.BL_SOURCE_X50,&nbsp;bitlib.BL_SOURCE_ALT,&nbsp;bitlib.BL_SOURCE_GND<br>
+:param&nbsp;source:&nbsp;selects&nbsp;the&nbsp;type&nbsp;of&nbsp;source&nbsp;for&nbsp;a&nbsp;channel<br>
+:type&nbsp;offset:&nbsp;int<br>
+:param&nbsp;offset:&nbsp;the&nbsp;value&nbsp;to&nbsp;be&nbsp;offset<br>
+:type&nbsp;range:&nbsp;int<br>
+:param&nbsp;range:&nbsp;maximum&nbsp;peak-to-peak&nbsp;voltage&nbsp;the&nbsp;can&nbsp;be&nbsp;captured&nbsp;on&nbsp;the&nbsp;selected&nbsp;device,&nbsp;channel&nbsp;and&nbsp;source.<br>
+:type&nbsp;coupling:&nbsp;bitlib.BL_COUPLING_AC,bitlib.BL_COUPLING_DC,bitlib.BL_COUPLING_RF,bitlib.BL_ASK<br>
+:param&nbsp;coupling:&nbsp;Selects&nbsp;coupling</tt></dd></dl>
+
+<dl><dt><a name="Channel-count"><strong>count</strong></a>(self, type)</dt><dd><tt>Return&nbsp;the&nbsp;number&nbsp;of&nbsp;channels&nbsp;or&nbsp;ranges&nbsp;per&nbsp;the&nbsp;type&nbsp;specifier(bitlib.BL_COUNT_ANALOG=&gt;devices,&nbsp;bitlib.BL_COUNT_LOGIC=&gt;analog,&nbsp;2=&gt;logic,&nbsp;bitlib.BL_COUNT_RANGE=&gt;ranges)&nbsp;using&nbsp;the&nbsp;prevailing&nbsp;device&nbsp;and/or&nbsp;channel&nbsp;for&nbsp;those&nbsp;types&nbsp;that&nbsp;require&nbsp;it.<br>
+&nbsp;<br>
+:type&nbsp;type:&nbsp;bitlib.BL_COUNT_ANALOG,bitlib.BL_COUNT_LOGIC,bitlib.BL_COUNT_RANGE<br>
+:param&nbsp;type:&nbsp;specifies&nbsp;the&nbsp;type&nbsp;for&nbsp;which&nbsp;count&nbsp;must&nbsp;be&nbsp;found<br>
+:return:&nbsp;count&nbsp;of&nbsp;the&nbsp;selected&nbsp;type</tt></dd></dl>
+
+<dl><dt><a name="Channel-coupling"><strong>coupling</strong></a>(self, coupling)</dt><dd><tt>Selects&nbsp;coupling&nbsp;and&nbsp;returns&nbsp;the&nbsp;same&nbsp;value&nbsp;as&nbsp;A&nbsp;if&nbsp;the&nbsp;requested<br>
+value&nbsp;is&nbsp;selectable&nbsp;on&nbsp;the&nbsp;current&nbsp;channel&nbsp;and&nbsp;source.&nbsp;If&nbsp;coupling&nbsp;is<br>
+omitted&nbsp;(or&nbsp;bitlib.BL_ASK&nbsp;is&nbsp;specified),&nbsp;the&nbsp;prevailing&nbsp;coupling&nbsp;is&nbsp;returned.<br>
+&nbsp;<br>
+:type&nbsp;coupling:&nbsp;bitlib.BL_COUPLING_AC,bitlib.BL_COUPLING_DC,bitlib.BL_COUPLING_RF,bitlib.BL_ASK<br>
+:param&nbsp;coupling:&nbsp;Selects&nbsp;coupling<br>
+:return:&nbsp;the&nbsp;prevailing&nbsp;coupling&nbsp;is&nbsp;returned</tt></dd></dl>
+
+<dl><dt><a name="Channel-disable"><strong>disable</strong></a>(self)</dt><dd><tt>Assign&nbsp;diasble&nbsp;status&nbsp;E&nbsp;(boolean)&nbsp;on&nbsp;the&nbsp;selected&nbsp;channel.<br>
+&nbsp;<br>
+:return:&nbsp;true&nbsp;if&nbsp;successful&nbsp;or&nbsp;false&nbsp;otherwise.</tt></dd></dl>
+
+<dl><dt><a name="Channel-enable"><strong>enable</strong></a>(self)</dt><dd><tt>Assign&nbsp;enable&nbsp;status&nbsp;E&nbsp;(boolean)&nbsp;on&nbsp;the&nbsp;selected&nbsp;channel.<br>
+&nbsp;<br>
+:return:&nbsp;true&nbsp;if&nbsp;successful&nbsp;or&nbsp;false&nbsp;otherwise.</tt></dd></dl>
+
+<dl><dt><a name="Channel-index"><strong>index</strong></a>(self, offset<font color="#909090">=0</font>)</dt><dd><tt>Request&nbsp;the&nbsp;capture&nbsp;address&nbsp;offset&nbsp;and&nbsp;return&nbsp;the&nbsp;address&nbsp;actually<br>
+used&nbsp;A&nbsp;which&nbsp;may&nbsp;be&nbsp;different&nbsp;if&nbsp;the&nbsp;request&nbsp;is&nbsp;unavailable&nbsp;or&nbsp;invalid.<br>
+If&nbsp;offset&nbsp;is&nbsp;omitted&nbsp;the&nbsp;address&nbsp;is&nbsp;(re)set&nbsp;to&nbsp;zero.<br>
+&nbsp;<br>
+:type&nbsp;offset:&nbsp;int<br>
+:param&nbsp;offset:&nbsp;Request&nbsp;the&nbsp;capture&nbsp;address&nbsp;offset<br>
+:return:&nbsp;the&nbsp;address&nbsp;actually&nbsp;used</tt></dd></dl>
+
+<dl><dt><a name="Channel-offset"><strong>offset</strong></a>(self, offset)</dt><dd><tt>Request&nbsp;offset&nbsp;and&nbsp;return&nbsp;the&nbsp;offset&nbsp;that&nbsp;is&nbsp;actually&nbsp;assigned&nbsp;to&nbsp;to<br>
+the&nbsp;selected&nbsp;device,&nbsp;channel&nbsp;and&nbsp;source.&nbsp;If&nbsp;a&nbsp;value&nbsp;beyond&nbsp;the<br>
+available&nbsp;offset&nbsp;range&nbsp;of&nbsp;the&nbsp;device&nbsp;is&nbsp;specified&nbsp;the&nbsp;closest&nbsp;available<br>
+offset&nbsp;for&nbsp;that&nbsp;channel&nbsp;is&nbsp;used.<br>
+&nbsp;<br>
+:type&nbsp;offset:&nbsp;int<br>
+:param&nbsp;offset:&nbsp;the&nbsp;value&nbsp;to&nbsp;be&nbsp;offset<br>
+:return:&nbsp;offset&nbsp;that&nbsp;is&nbsp;actually&nbsp;assigned&nbsp;to&nbsp;the&nbsp;selected&nbsp;device,&nbsp;channel&nbsp;and&nbsp;source.</tt></dd></dl>
+
+<dl><dt><a name="Channel-select"><strong>select</strong></a>(self)</dt><dd><tt>Request&nbsp;the&nbsp;selection&nbsp;of&nbsp;a&nbsp;current&nbsp;channel.<br>
+&nbsp;<br>
+:return:&nbsp;current&nbsp;selection&nbsp;of&nbsp;channel&nbsp;is&nbsp;returned.</tt></dd></dl>
+
+<dl><dt><a name="Channel-source"><strong>source</strong></a>(self, type<font color="#909090">=1</font>)</dt><dd><tt>Request&nbsp;the&nbsp;selection&nbsp;of&nbsp;a&nbsp;range&nbsp;or&nbsp;sources.<br>
+&nbsp;<br>
+:type&nbsp;type:&nbsp;bitlib.BL_SOURCE_POD,&nbsp;bitlib.BL_SOURCE_BNC,&nbsp;bitlib.BL_SOURCE_X10,&nbsp;bitlib.BL_SOURCE_X20,&nbsp;bitlib.BL_SOURCE_X50,&nbsp;bitlib.BL_SOURCE_ALT,&nbsp;bitlib.BL_SOURCE_GND<br>
+:param&nbsp;type:&nbsp;selects&nbsp;the&nbsp;type&nbsp;of&nbsp;source&nbsp;for&nbsp;a&nbsp;channel</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>analog_count</strong> = None</dl>
+
+<dl><dt><strong>analog_range_count</strong> = None</dl>
+
+<dl><dt><strong>device</strong> = None</dl>
+
+<dl><dt><strong>id</strong> = None</dl>
+
+<dl><dt><strong>logic_count</strong> = None</dl>
+
+<dl><dt><strong>src</strong> = None</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

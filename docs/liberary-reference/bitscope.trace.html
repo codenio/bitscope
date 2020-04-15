@@ -1,0 +1,111 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module bitscope.trace</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="bitscope.html"><font color="#ffffff">bitscope</font></a>.trace</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aananth/workspace/github/bitscope/bitscope/trace.py">/home/aananth/workspace/github/bitscope/bitscope/trace.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="bitlib.html">bitlib</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="bitscope.trace.html#Trace">Trace</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Trace">class <strong>Trace</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Trace">Trace</a>&nbsp;Class&nbsp;to&nbsp;handle&nbsp;trace&nbsp;related&nbsp;functionalities.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Trace-configure"><strong>configure</strong></a>(self, rate<font color="#909090">=0</font>, size<font color="#909090">=0</font>, pre_capture<font color="#909090">=0</font>, post_capture<font color="#909090">=0</font>)</dt><dd><tt>configure&nbsp;the&nbsp;trace&nbsp;settings.<br>
+&nbsp;<br>
+:type&nbsp;rate:&nbsp;int<br>
+:param&nbsp;rate:&nbsp;rate&nbsp;to&nbsp;perform&nbsp;the&nbsp;trace<br>
+:type&nbsp;size:&nbsp;int<br>
+:param&nbsp;size:&nbsp;size&nbsp;to&nbsp;perform&nbsp;the&nbsp;trace<br>
+:type&nbsp;pre_capture:&nbsp;int<br>
+:param&nbsp;pre_capture:&nbsp;time&nbsp;to&nbsp;start&nbsp;capture&nbsp;before&nbsp;performing&nbsp;the&nbsp;trace<br>
+:type&nbsp;post_capture:&nbsp;int<br>
+:param&nbsp;post_capture:&nbsp;time&nbsp;to&nbsp;stop&nbsp;capture&nbsp;after&nbsp;performing&nbsp;the&nbsp;trace</tt></dd></dl>
+
+<dl><dt><a name="Trace-post_capture"><strong>post_capture</strong></a>(self, post_capture<font color="#909090">=0</font>)</dt><dd><tt>sets&nbsp;post_capture&nbsp;time&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;post_capture:&nbsp;int<br>
+:param&nbsp;post_capture:&nbsp;time&nbsp;to&nbsp;stop&nbsp;capture&nbsp;after&nbsp;performing&nbsp;the&nbsp;trace<br>
+:return:&nbsp;current&nbsp;post_capture&nbsp;time</tt></dd></dl>
+
+<dl><dt><a name="Trace-pre_capture"><strong>pre_capture</strong></a>(self, pre_capture<font color="#909090">=0</font>)</dt><dd><tt>sets&nbsp;pre_capture&nbsp;time&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;pre_capture:&nbsp;int<br>
+:param&nbsp;pre_capture:&nbsp;time&nbsp;to&nbsp;start&nbsp;capture&nbsp;before&nbsp;performing&nbsp;the&nbsp;trace<br>
+:return:&nbsp;current&nbsp;pre_capture&nbsp;time</tt></dd></dl>
+
+<dl><dt><a name="Trace-rate"><strong>rate</strong></a>(self, rate<font color="#909090">=None</font>)</dt><dd><tt>sets&nbsp;rate&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;rate:&nbsp;int<br>
+:param&nbsp;rate:&nbsp;rate&nbsp;to&nbsp;perform&nbsp;the&nbsp;trace<br>
+:return:&nbsp;current&nbsp;rate</tt></dd></dl>
+
+<dl><dt><a name="Trace-size"><strong>size</strong></a>(self, size<font color="#909090">=None</font>)</dt><dd><tt>sets&nbsp;size&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;size:&nbsp;int<br>
+:param&nbsp;size:&nbsp;size&nbsp;to&nbsp;perform&nbsp;the&nbsp;trace<br>
+:return:&nbsp;current&nbsp;size</tt></dd></dl>
+
+<dl><dt><a name="Trace-state"><strong>state</strong></a>(self)</dt><dd><tt>returns&nbsp;current&nbsp;state&nbsp;of&nbsp;the&nbsp;machine.<br>
+&nbsp;<br>
+:return:&nbsp;current&nbsp;state&nbsp;of&nbsp;machine</tt></dd></dl>
+
+<dl><dt><a name="Trace-time"><strong>time</strong></a>(self, t<font color="#909090">=None</font>)</dt><dd><tt>sets&nbsp;time&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;t:&nbsp;double<br>
+:param&nbsp;t:&nbsp;time&nbsp;to&nbsp;trace<br>
+:return:&nbsp;current&nbsp;time</tt></dd></dl>
+
+<dl><dt><a name="Trace-trace"><strong>trace</strong></a>(self, time_out<font color="#909090">=0</font>, sync<font color="#909090">=False</font>)</dt><dd><tt>Commence&nbsp;capture&nbsp;subject&nbsp;to&nbsp;timeout&nbsp;(seconds)&nbsp;and&nbsp;block&nbsp;until&nbsp;the<br>
+trace&nbsp;completes&nbsp;unless&nbsp;sync&nbsp;is&nbsp;true&nbsp;in&nbsp;which&nbsp;case&nbsp;return&nbsp;now&nbsp;and&nbsp;capture<br>
+asynchronously.&nbsp;In&nbsp;the&nbsp;latter&nbsp;use&nbsp;scope.tracer.<a href="#Trace-state">state</a>()&nbsp;to&nbsp;determine&nbsp;the&nbsp;state&nbsp;of<br>
+capture.&nbsp;Returns&nbsp;OK&nbsp;true&nbsp;if&nbsp;the&nbsp;trace&nbsp;commenced&nbsp;successfully,&nbsp;false<br>
+otherwise.&nbsp;If&nbsp;time_out&nbsp;is&nbsp;zero&nbsp;or&nbsp;omitted,&nbsp;perform&nbsp;a&nbsp;forced&nbsp;trigger&nbsp;trace<br>
+immediately.&nbsp;If&nbsp;time_out&nbsp;is&nbsp;negative,&nbsp;do&nbsp;the&nbsp;trace&nbsp;with&nbsp;infinite&nbsp;timeout&nbsp;but<br>
+do&nbsp;it&nbsp;execute&nbsp;aysnchronously.<br>
+&nbsp;<br>
+:type&nbsp;time_out:&nbsp;double<br>
+:param&nbsp;time_out:&nbsp;specify&nbsp;the&nbsp;time&nbsp;out&nbsp;for&nbsp;trace<br>
+:type&nbsp;sync:&nbsp;bitlib.BL_SYNC,&nbsp;bitlib.BL_ASYNC<br>
+:param&nbsp;sync:&nbsp;specify&nbsp;trace&nbsp;modes<br>
+&nbsp;<br>
+:return:&nbsp;boolean</tt></dd></dl>
+
+<dl><dt><a name="Trace-trigger"><strong>trigger</strong></a>(self, volt, kind)</dt><dd><tt>sets&nbsp;tigger&nbsp;for&nbsp;trace.<br>
+&nbsp;<br>
+:type&nbsp;volt:&nbsp;double<br>
+:param&nbsp;volt:&nbsp;voltage&nbsp;level&nbsp;for&nbsp;trigger<br>
+:type&nbsp;kind:&nbsp;bitlib.BL_TRIG_RISE,&nbsp;bitlib.BL_TRIG_FALL,&nbsp;bitlib.BL_TRIG_HIGH,&nbsp;bitlib.BL_TRIG_LOW,&nbsp;bitlib.BL_TRIG_NONE<br>
+:param&nbsp;kind:&nbsp;specify&nbsp;trigger&nbsp;type<br>
+:return:&nbsp;cuurent&nbsp;trigger&nbsp;setting</tt></dd></dl>
+
+</td></tr></table></td></tr></table>
+</body></html>

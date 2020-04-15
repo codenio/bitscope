@@ -1,0 +1,85 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module bitscope.scope</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="bitscope.html"><font color="#ffffff">bitscope</font></a>.scope</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/aananth/workspace/github/bitscope/bitscope/scope.py">/home/aananth/workspace/github/bitscope/bitscope/scope.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="bitlib.html">bitlib</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="bitscope.scope.html#Scope">Scope</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Scope">class <strong>Scope</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>scope&nbsp;class&nbsp;to&nbsp;open&nbsp;bitscope&nbsp;modules&nbsp;connected&nbsp;to&nbsp;pc.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Scope-__del__"><strong>__del__</strong></a>(self)</dt><dd><tt>Destroy&nbsp;the&nbsp;<a href="#Scope">Scope</a>&nbsp;Object.</tt></dd></dl>
+
+<dl><dt><a name="Scope-__init__"><strong>__init__</strong></a>(self, name, count<font color="#909090">=1</font>)</dt><dd><tt>Initialise&nbsp;the&nbsp;<a href="#Scope">Scope</a>&nbsp;Object.<br>
+&nbsp;<br>
+:type&nbsp;name:&nbsp;string<br>
+:param&nbsp;name:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
+:type&nbsp;count:&nbsp;int<br>
+:param&nbsp;count:&nbsp;number&nbsp;of&nbsp;devices&nbsp;to&nbsp;be&nbsp;opened.&nbsp;default&nbsp;1</tt></dd></dl>
+
+<dl><dt><a name="Scope-close"><strong>close</strong></a>(self)</dt><dd><tt>Close&nbsp;all&nbsp;opened&nbsp;devices.&nbsp;Call&nbsp;this&nbsp;to&nbsp;release&nbsp;library&nbsp;resources&nbsp;and/or<br>
+before&nbsp;opening&nbsp;(scope.<a href="#Scope-open">open</a>())&nbsp;a&nbsp;new&nbsp;set&nbsp;of&nbsp;devices.</tt></dd></dl>
+
+<dl><dt><a name="Scope-halt"><strong>halt</strong></a>(self)</dt><dd><tt>Halt&nbsp;any&nbsp;prevailing&nbsp;streaming&nbsp;on&nbsp;the&nbsp;selected&nbsp;device.<br>
+&nbsp;<br>
+:returns:&nbsp;OK</tt></dd></dl>
+
+<dl><dt><a name="Scope-initialise"><strong>initialise</strong></a>(self)</dt><dd><tt>Initialises&nbsp;BitLib&nbsp;library.</tt></dd></dl>
+
+<dl><dt><a name="Scope-open"><strong>open</strong></a>(self, name, count<font color="#909090">=1</font>)</dt><dd><tt>Opens&nbsp;Specified&nbsp;Number&nbsp;of&nbsp;Devices<br>
+&nbsp;<br>
+:type&nbsp;name:&nbsp;string<br>
+:param&nbsp;name:&nbsp;USB&nbsp;Port&nbsp;Connected&nbsp;to&nbsp;Bitscope<br>
+:type&nbsp;count:&nbsp;int<br>
+:param&nbsp;count:&nbsp;number&nbsp;of&nbsp;devices&nbsp;to&nbsp;be&nbsp;opened.&nbsp;default&nbsp;1<br>
+:returns:&nbsp;int&nbsp;opened&nbsp;device&nbsp;count</tt></dd></dl>
+
+<dl><dt><a name="Scope-version"><strong>version</strong></a>(self, type<font color="#909090">=1</font>)</dt><dd><tt>Retruns&nbsp;version&nbsp;string&nbsp;of&nbsp;the&nbsp;selected&nbsp;type.&nbsp;<br>
+scope.<a href="#Scope-version">version</a>(type)&nbsp;-&gt;&nbsp;V<br>
+scope.<a href="#Scope-version">version</a>(type=0)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;the&nbsp;selected&nbsp;device.<br>
+scope.<a href="#Scope-version">version</a>(type=1)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;library.<br>
+scope.<a href="#Scope-version">version</a>(type=2)&nbsp;returns&nbsp;the&nbsp;version&nbsp;of&nbsp;python&nbsp;binding.<br>
+&nbsp;<br>
+:type&nbsp;type:&nbsp;int<br>
+:param&nbsp;type:&nbsp;Version&nbsp;type&nbsp;to&nbsp;display<br>
+:returns:&nbsp;version&nbsp;string</tt></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>devices</strong> = []</dl>
+
+<dl><dt><strong>tracer</strong> = None</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
