@@ -3,6 +3,8 @@
 import bitlib
 from bitscope.channel import Channel
 
+from utils.logger import logger
+
 class Device:
     """Device class to select and configure devices that are open."""
     name = None
@@ -64,6 +66,6 @@ class Device:
             # select the mode
             bitlib.BL_Mode(mode)
             self.mode = mode
-            print "Device : {} set to Mode : {}".format(self.id,self.mode)
+            logger.debug("Device : {} set to Mode : {}".format(self.id,self.mode))
         
         return self.mode

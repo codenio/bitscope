@@ -6,6 +6,8 @@ from bitscope.device import Device
 from bitscope.channel import Channel
 from bitscope.trace import Trace as Tracer
 
+from utils.logger import logger
+
 class Scope:
     """scope class to open bitscope modules connected to pc.
     """
@@ -39,7 +41,7 @@ class Scope:
         self.device_count = bitlib.BL_Open(probe_files,count)
         
         if self.device_count == 0:
-            print "  FAILED: no devices found (check your probe file)."
+            logger.debug("  FAILED: no devices found (check your probe file).")
             return
         
         # create Device object for each and append in scope.devices
@@ -48,7 +50,7 @@ class Scope:
         # number of corresponding channels
         # instanciate Object from Sub Classess 
         self.tracer = Tracer()
-        print "Bitscope Micro Units Opened : {}".format(len(self.devices))
+        logger.debug("Bitscope Micro Units Opened : {}".format(len(self.devices)))
 
     def initialise(self):
         """Initialises BitLib library.
@@ -97,7 +99,7 @@ class Scope:
             self.device_count = bitlib.BL_Count(type)
             return self.device_count
         else:
-            print "Invalid Count Type"
+            logger.debug("Invalid Count Type")
             return 0
 
     def send(self,command,layer):
@@ -133,7 +135,7 @@ class Scope:
         if type in [bitlib.BL_VERSION_DEVICE, bitlib.BL_VERSION_LIBRARY, bitlib.BL_VERSION_BINDING]:
             return bitlib.BL_Version(type)
         else:
-            print "Invaild Version Type Specified"
+            logger.debug("Invaild Version Type Specified")
 
     def close(self):
         """Close all opened devices. Call this to release library resources and/or
@@ -144,5 +146,5 @@ class Scope:
     def __del__(self):
         """Destroy the Scope Object.
         """
-        print "Closing {} Bitscope Micro Units".format(len(self.devices))
+        logger.debug("Closing {} Bitscope Micro Units".format(len(self.devices)))
         bitlib.BL_Close()

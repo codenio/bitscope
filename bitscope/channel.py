@@ -3,6 +3,8 @@
 
 import bitlib 
 
+from utils.logger import logger
+
 class Channel:
     """channel class to select, configure and acquire data from channels."""
     
@@ -71,7 +73,7 @@ class Channel:
                 self.analog_range_count = bitlib.BL_Count(type)
                 return self.analog_range_count
         else:
-            print "Invalid Count Type"
+            logger.debug("Invalid Count Type")
             return 0
     
     def source(self,type=bitlib.BL_SOURCE_BNC):
@@ -201,7 +203,7 @@ class Channel:
         """
        
         self.select()
-        print "Enabled Device : {} , Channel : {}".format(self.device,self.id)
+        logger.debug("Enabled Device : {} , Channel : {}".format(self.device,self.id))
         return bitlib.BL_Enable(1)
         
     
@@ -213,7 +215,7 @@ class Channel:
         """
         
         self.select()   
-        print "Disabled Device : {} , Channel : {}".format(self.device,self.id)
+        logger.debug("Disabled Device : {} , Channel : {}".format(self.device,self.id))
         return bitlib.BL_Enable(0)
         
     
@@ -245,6 +247,6 @@ class Channel:
         """
         
         self.select()
-        print "Acquiring Data from Device : {} , Channel : {}".format(self.device,self.id)
+        logger.debug("Acquiring Data from Device : {} , Channel : {}".format(self.device,self.id))
         
         return bitlib.BL_Acquire()

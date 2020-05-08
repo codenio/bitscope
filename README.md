@@ -99,7 +99,10 @@ print Data
     
     # install the bitscope-library_2.0 debian package
     $ sudo apt-get install bitscope-library_2.0.FE26B_amd64.deb
-    
+    ```
+- to use bitlib in python2
+    ```shell
+    # to install python2 binding
     # unzip and cd into bitscope/src/python-bindings-2.0-DC01L/ 
     $ unzip python-bindings-2.0-DC01L.zip
     $ cd python-bindings-2.0-DC01L/
@@ -110,8 +113,22 @@ print Data
     # in case of errors.. try
     $ sudo BASECFLAGS="" OPT="" CFLAGS="-O3" python setup-bitlib.py install
     ```
-
     Note: the files, debian packages and steps to install were taking from [murgen-dev-kit](https://github.com/kelu124/murgen-dev-kit/tree/master/software). thanks to [K.Ghosh](https://github.com/kelu124)
+
+- to use bitlib in python3
+    ```shell
+    # to install python3 binding
+    # unzip and cd into bitscope/src/python3-bindings-2.0-DC01L/ 
+    $ unzip python3-bindings-2.0-DC01L.zip
+    $ cd python3-bindings-2.0-DC01L/
+    
+    # install bitlib using the python-binding script 
+    $ sudo python3 setup-bitlib.py install
+    
+    # in case of errors.. try
+    $ sudo BASECFLAGS="" OPT="" CFLAGS="-O3" python3 setup-bitlib.py install
+    ```
+    Note: visit [python3-bindings-2.0-DC01L](https://github.com/codenio/python3-bindings-2.0-DC01L) for further details.
 
 - to install stable version of **bitscope** package
     ```bash
