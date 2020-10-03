@@ -91,8 +91,18 @@ print Data
     ```bash
     $ git clone git@github.com:codenio/bitscope.git
     ```
-- install `bitlib` library from ./src directory
+- install `bitlib` library from ./src directory for your Operating System (identified by file suffix):
+
+    - Windows (all) => [i386.zip](src/bitscope-library_2.0.FE26B_i386.zip)
+    - Machintosh (all) => [app.tgz](src/bitscope-library_2.0.FE26B.app.tgz)
+    - Raspberry Pi => [armhf.deb](src/bitscope-library_2.0.FE26B_armhf.deb)
+    - Debian Linux 32 bit => [i386.deb](src/bitscope-library_2.0.FE26B_i386.deb)
+    - Fedora Linux 32 bit => [i386.rpm](src/bitscope-library-2.0.FE26B-1.i386.rpm)
+    - Debian Linux 64 bit => [amd64.deb](src/bitscope-library_2.0.FE26B_amd64.deb)
+    - Fedora Linux 64 bit => [x86_64.rpm](src/bitscope-library-2.0.FE26B-1.x86_64.rpm)
     
+    #### to install in ubuntu 18.04 64 bit
+
     ```bash
     # cd into bitscope/src/ directory
     $ cd bitscope/src/
@@ -100,6 +110,7 @@ print Data
     # install the bitscope-library_2.0 debian package
     $ sudo apt-get install bitscope-library_2.0.FE26B_amd64.deb
     ```
+
 - to use bitlib in python2
     ```shell
     # to install python2 binding
