@@ -1,4 +1,4 @@
-[![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/downloads/release/python-2715/)  [![PyPI version](https://badge.fury.io/py/bitscope.svg)](https://badge.fury.io/py/bitscope) [![bitlib version](https://img.shields.io/badge/bitlib-2.0-blue)](http://bitscope.com/software/library/guide/2.0/#blindex-assign-the-buffer-offset-for-dumps)  [![GitHub license](https://img.shields.io/github/license/codenio/bitscope)](https://github.com/codenio/bitscope/blob/master/LICENSE)
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-3611/)  [![PyPI version](https://badge.fury.io/py/bitscope.svg)](https://badge.fury.io/py/bitscope) [![bitlib version](https://img.shields.io/badge/bitlib-2.0-blue)](http://bitscope.com/software/library/guide/2.0/#blindex-assign-the-buffer-offset-for-dumps)  [![GitHub license](https://img.shields.io/github/license/codenio/bitscope)](https://github.com/codenio/bitscope/blob/master/LICENSE)
 
 # bitscope
 
@@ -8,7 +8,7 @@
   <img src="images/bitscope.png", href="http://bitscope.com/product/BS05/">
 </p>
 
-It is a python wrapper for **bitlib** package installed using [**bitscope-library_2.0.FE26B**](docs/BitScopeLibraryGuide.pdf) and [**python-bindings-2.0-DC01L**](src/python-bindings-2.0-DC01L.zip)
+It is a python wrapper for **bitlib** package installed using [**bitscope-library_2.0.FE26B**](docs/BitScopeLibraryGuide.pdf) and [**python3-bindings-2.0-DC01L**](src/python3-bindings-2.0-DC01L.zip)
 
 
 ## Usage
@@ -100,21 +100,6 @@ print Data
     # install the bitscope-library_2.0 debian package
     $ sudo apt-get install bitscope-library_2.0.FE26B_amd64.deb
     ```
-- to use bitlib in python2
-    ```shell
-    # to install python2 binding
-    # unzip and cd into bitscope/src/python-bindings-2.0-DC01L/ 
-    $ unzip python-bindings-2.0-DC01L.zip
-    $ cd python-bindings-2.0-DC01L/
-    
-    # install bitlib using the python-binding script 
-    $ sudo python setup-bitlib.py install
-    
-    # in case of errors.. try
-    $ sudo BASECFLAGS="" OPT="" CFLAGS="-O3" python setup-bitlib.py install
-    ```
-    Note: the files, debian packages and steps to install were taking from [murgen-dev-kit](https://github.com/kelu124/murgen-dev-kit/tree/master/software). thanks to [K.Ghosh](https://github.com/kelu124)
-
 - to use bitlib in python3
     ```shell
     # to install python3 binding
@@ -133,6 +118,10 @@ print Data
 - to install stable version of **bitscope** package
     ```bash
     $ sudo pip install bitscope
+    
+    or 
+
+    $ sudo pip install bitscope==0.0.3
     ```
 - connect your bitscope to your pc and test the functionality using
 the example file at `examples/basics/bitscope-read-data.py`

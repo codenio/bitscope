@@ -1,5 +1,5 @@
 __name__='bitscope'
-__version__='0.0.2'
+__version__='0.0.3'
 __status__ = "Developement"
 __license__ = "GPL"
 
